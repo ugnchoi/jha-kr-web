@@ -1,4 +1,4 @@
-import { type SchemaTypeDefinition } from "sanity";
+import type { SchemaTypeDefinition, Template } from "sanity";
 
 import { blockContent } from "./objects/blockContent";
 import { category } from "./documents/category";
@@ -9,18 +9,38 @@ import { homePage } from "./documents/homePage";
 import { admissionsPage } from "./documents/admissionsPage";
 import { coop } from "./documents/coop";
 import { activity } from "./documents/activity";
+import { generalPage } from "./documents/generalPage";
 
-export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [
-    post,
-    author,
-    category,
-    program,
-    blockContent,
-    homePage,
-    admissionsPage,
-    coop,
-    activity,
+const types: SchemaTypeDefinition[] = [
+  post,
+  author,
+  category,
+  program,
+  blockContent,
+  homePage,
+  admissionsPage,
+  coop,
+  activity,
+  generalPage,
+];
+
+const generalPageSingletonTemplate: Template = {
+  id: "generalPageByKey",
+  title: "General Page Singleton",
+  schemaType: "generalPage",
+  parameters: [
+    {
+      name: "pageKey",
+      type: "string",
+    },
   ],
+  value: (params: { pageKey?: string }) => ({
+    pageKey: params?.pageKey,
+  }),
+};
+
+export const schema = {
+  types,
+  templates: (prev: Template[]) => [...prev, generalPageSingletonTemplate],
 };
 

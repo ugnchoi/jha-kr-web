@@ -7,7 +7,8 @@ export const dataset = getEnvVar(
 );
 
 export const projectId = getEnvVar(
-  "NEXT_PUBLIC_SANITY_PROJECT_ID"
+  "NEXT_PUBLIC_SANITY_PROJECT_ID",
+  "lwvgcasl"
 );
 
 function getEnvVar(name: string, fallback?: string): string {

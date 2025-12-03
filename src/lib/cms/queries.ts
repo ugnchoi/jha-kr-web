@@ -116,3 +116,18 @@ export const activitiesQuery = groq`
     featuredImage
   }
 `;
+
+export const generalPageQuery = groq`
+  *[_type == "generalPage" && pageKey == $pageKey][0] {
+    heroTitle,
+    heroSubtitle,
+    heroImage,
+    body,
+    highlights,
+    faqItems[]{
+      question,
+      answer
+    },
+    gallery
+  }
+`;

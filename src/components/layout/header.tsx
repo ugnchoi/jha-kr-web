@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const NAV_ITEMS = [
-  { label: "About", href: "/about" },
-  { label: "Programs", href: "/programs" },
-  { label: "Co-op", href: "/coop" },
-  { label: "Activities", href: "/activities" },
-  { label: "News", href: "/news" },
-  { label: "Admissions", href: "/admissions" },
+  { label: "소개", href: "/about" },
+  { label: "프로그램", href: "/programs" },
+  { label: "코업", href: "/coop" },
+  { label: "활동", href: "/activities" },
+  { label: "소식", href: "/news" },
+  { label: "입학 안내", href: "/admissions" },
 ];
 
 export function Header() {

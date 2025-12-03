@@ -30,6 +30,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - **Styling:** Tailwind CSS + Radix UI
 - **Deployment:** Vercel
 
+## 🧊 Sanity Studio
+
+- Copy `env.example` → `.env.local`, then fill the Sanity values (project `lwvgcasl`, dataset `production`).
+- Start the embedded Studio via `npm run dev` → [http://localhost:3000/studio](http://localhost:3000/studio).
+- Standalone/hosted workflows:
+  - `npm run studio:dev` — faster schema hot reload on `http://localhost:3333`.
+  - `npm run studio:deploy` — deploy Studio to Sanity’s managed hosting.
+  - `npm run studio:manage` — open the Sanity manage dashboard for datasets, tokens, and webhooks.
+- Detailed instructions live in `docs/sanity-studio-setup.md`.
+
 ## 📂 Directory Structure
 
 - `src/app`: App Router pages and layouts
