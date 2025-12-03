@@ -1,6 +1,7 @@
 import { groq } from "next-sanity";
 
-// Post list query
+// ... existing queries ...
+
 export const postsQuery = groq`
   *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
     title,
@@ -11,7 +12,6 @@ export const postsQuery = groq`
   }
 `;
 
-// Single post query
 export const postQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     title,
@@ -37,5 +37,26 @@ export const homePageQuery = groq`
       mainImage,
       "categories": categories[]->title
     }
+  }
+`;
+
+// Programs
+export const programsQuery = groq`
+  *[_type == "program" && defined(slug.current)] | order(title asc) {
+    title,
+    titleEn,
+    "slug": slug.current,
+    description,
+    mainImage
+  }
+`;
+
+export const programQuery = groq`
+  *[_type == "program" && slug.current == $slug][0] {
+    title,
+    titleEn,
+    description,
+    mainImage,
+    content
   }
 `;
