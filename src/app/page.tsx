@@ -1,7 +1,7 @@
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { homePageQuery } from "@/lib/cms/queries";
 import { Hero } from "@/components/blocks/hero";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@sanity/image-url";
 
 interface HomePageData {
   heroTitle: string;

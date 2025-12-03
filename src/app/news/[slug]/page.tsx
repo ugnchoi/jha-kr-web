@@ -5,7 +5,7 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { Badge } from "@/components/ui/badge";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@sanity/image-url";
 
 interface Post {
   title: string;

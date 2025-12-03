@@ -4,7 +4,7 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { programQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { Button } from "@/components/ui/button";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@sanity/image-url";
 import Link from "next/link";
 
 interface Program {

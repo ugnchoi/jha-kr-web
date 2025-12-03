@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 import { Button } from "@/components/ui/button";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { SanityImageSource } from "@sanity/image-url";
 
 interface HeroProps {
   title: string;
