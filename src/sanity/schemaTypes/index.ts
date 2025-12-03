@@ -6,8 +6,19 @@ import { post } from "./documents/post";
 import { author } from "./documents/author";
 import { program } from "./documents/program";
 import { homePage } from "./documents/homePage";
+import { coop } from "./documents/coop";
+import { activity } from "./documents/activity";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [post, author, category, program, blockContent, homePage],
+  types: [
+    post,
+    author,
+    category,
+    program,
+    blockContent,
+    homePage,
+    coop,
+    activity,
+  ],
 };
 

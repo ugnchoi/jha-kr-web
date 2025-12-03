@@ -60,3 +60,44 @@ export const programQuery = groq`
     content
   }
 `;
+
+export const coopsQuery = groq`
+  *[_type == "coop" && defined(slug.current)] | order(title asc) {
+    title,
+    "slug": slug.current,
+    day,
+    description,
+    heroImage
+  }
+`;
+
+export const coopQuery = groq`
+  *[_type == "coop" && slug.current == $slug][0] {
+    title,
+    day,
+    description,
+    heroImage,
+    announcements[]->{
+      title,
+      "slug": slug.current,
+      publishedAt
+    },
+    activities[]->{
+      title,
+      "slug": slug.current,
+      category,
+      description,
+      featuredImage
+    }
+  }
+`;
+
+export const activitiesQuery = groq`
+  *[_type == "activity" && defined(slug.current)] | order(title asc) {
+    title,
+    "slug": slug.current,
+    category,
+    description,
+    featuredImage
+  }
+`;
