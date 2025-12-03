@@ -8,25 +8,25 @@
 
 ## A) Repository & Governance
 
-- [ ] Create Git repository under the correct org; add admins/maintainers.
+- [x] Create Git repository under the correct org; add admins/maintainers.
 - [ ] Protect `main` branch (required PR, 1–2 code owners, passing checks, no direct pushes).
 - [ ] Define branches: `main` (prod), `develop` (preview/staging), `feat/*` (feature).
-- [ ] Add `README.md` (overview, run, build, deploy, envs, contact).
-- [ ] Add `CODEOWNERS` with component ownership and review rules.
+- [x] Add `README.md` (overview, run, build, deploy, envs, contact).
+- [x] Add `CODEOWNERS` with component ownership and review rules.
 - [ ] Add PR template and Issue templates (bug, feature, chore).
-- [ ] Choose license and add `LICENSE` (company standard or MIT).
-- [ ] Add `.gitignore` for Node/Next/Vercel/OS artifacts.
+- [x] Choose license and add `LICENSE` (company standard or MIT).
+- [x] Add `.gitignore` for Node/Next/Vercel/OS artifacts.
 - [ ] Enable Dependabot/Renovate for dependency & security updates.
 - [ ] Enable GitHub “Secret scanning” and “Dependabot alerts”.
-- [ ] Add `SECURITY.md` (vuln disclosure channel) and `CONTRIBUTING.md` (workflow).
+- [x] Add `SECURITY.md` (vuln disclosure channel) and `CONTRIBUTING.md` (workflow).
 
 ---
 
 ## B) Tooling & Standards
 
-- [ ] Pin Node LTS (e.g., `.nvmrc`) and package manager (pnpm/npm) with lockfile.
-- [ ] TypeScript strict mode enabled; `tsconfig` aligned with App Router.
-- [ ] ESLint + Prettier configured (TypeScript/React/a11y plugins).
+- [x] Pin Node LTS (e.g., `.nvmrc`) and package manager (pnpm/npm) with lockfile.
+- [x] TypeScript strict mode enabled; `tsconfig` aligned with App Router.
+- [x] ESLint + Prettier configured (TypeScript/React/a11y plugins).
 - [ ] EditorConfig added; VS Code workspace recommendations documented.
 - [ ] Conventional Commits policy (commitlint) and CHANGELOG strategy defined.
 - [ ] Husky pre‑commit: lint, typecheck, format. Pre‑push: tests.
@@ -36,18 +36,18 @@
 
 ## C) Application Skeleton (Next.js App Router)
 
-- [ ] Create routes: `/`, `/about`, `/programs`, `/faq`, `/coop`, `/activities`, `/alumni`, `/news`, `/gallery`, `/admissions`.
+- [x] Create routes: `/`, `/about`, `/programs`, `/faq`, `/coop`, `/activities`, `/alumni`, `/news`, `/gallery`, `/admissions`.
 - [ ] Add Route Handlers: `/sitemap.xml`, `/robots.txt` (and `/feed.xml` if used).
 - [ ] Shell layout: header/nav/footer + skip‑to‑content link.
-- [ ] Directory layout agreed:
-  - [ ] `app/` (routes, layouts, route handlers)
-  - [ ] `components/` (ui, layout, blocks)
-  - [ ] `lib/` (cms, seo, utils)
-  - [ ] `styles/` (global.css, tokens)
-  - [ ] `public/` (static assets)
-  - [ ] `docs/` (internal docs, this checklist)
+- [x] Directory layout agreed:
+  - [x] `app/` (routes, layouts, route handlers)
+  - [x] `components/` (ui, layout, blocks)
+  - [x] `lib/` (cms, seo, utils)
+  - [x] `styles/` (global.css, tokens)
+  - [x] `public/` (static assets)
+  - [x] `docs/` (internal docs, this checklist)
 - [ ] `.env.example` added; **no secrets** in repo.
-- [ ] Initial content placeholders so pages render and pass smoke tests.
+- [x] Initial content placeholders so pages render and pass smoke tests.
 
 ---
 
