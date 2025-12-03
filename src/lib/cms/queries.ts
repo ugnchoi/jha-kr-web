@@ -61,6 +61,21 @@ export const programQuery = groq`
   }
 `;
 
+export const admissionsPageQuery = groq`
+  *[_type == "admissionsPage"][0] {
+    heroTitle,
+    heroSubtitle,
+    heroImage,
+    ctaLabel,
+    ctaLink,
+    overview,
+    checklist,
+    timeline,
+    contactEmail,
+    contactPhone
+  }
+`;
+
 export const coopsQuery = groq`
   *[_type == "coop" && defined(slug.current)] | order(title asc) {
     title,
