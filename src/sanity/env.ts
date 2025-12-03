@@ -1,20 +1,22 @@
 export const apiVersion =
   process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-12-03";
 
-export const dataset = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_DATASET,
-  "Missing environment variable: NEXT_PUBLIC_SANITY_DATASET"
+export const dataset = getEnvVar(
+  "NEXT_PUBLIC_SANITY_DATASET",
+  "production" // Default dataset so builds don't fail before envs are set in Vercel
 );
 
-export const projectId = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  "Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID"
+export const projectId = getEnvVar(
+  "NEXT_PUBLIC_SANITY_PROJECT_ID"
 );
 
-function assertValue<T>(v: T | undefined, errorMessage: string): T {
-  if (v === undefined) {
-    throw new Error(errorMessage);
+function getEnvVar(name: string, fallback?: string): string {
+  const value = process.env[name] ?? fallback;
+
+  if (!value) {
+    throw new Error(`Missing environment variable: ${name}`);
   }
-  return v;
+
+  return value;
 }
 
