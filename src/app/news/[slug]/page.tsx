@@ -76,9 +76,15 @@ export default async function PostPage({ params }: Props) {
         </div>
       )}
 
-      <div className="prose prose-zinc dark:prose-invert lg:prose-lg mx-auto">
-        <PortableText value={post.body} />
-      </div>
+      {post.body ? (
+        <div className="prose prose-zinc dark:prose-invert lg:prose-lg mx-auto">
+          <PortableText value={post.body} />
+        </div>
+      ) : (
+        <p className="mx-auto max-w-2xl text-center text-muted-foreground">
+          This story is coming soon—check back shortly.
+        </p>
+      )}
     </article>
   );
 }
