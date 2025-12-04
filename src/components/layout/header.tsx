@@ -46,16 +46,21 @@ export function Header() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="pr-0">
-              <Link href="/" className="flex items-center space-x-2">
-                <span className="font-bold">JHA (Korea)</span>
-              </Link>
-              <nav className="mt-8 flex flex-col gap-4">
+            <SheetContent side="left" className="gap-6 px-6 py-8">
+              <div className="border-border/60 border-b pb-4">
+                <Link href="/" className="flex items-center space-x-2">
+                  <span className="font-bold">JHA (Korea)</span>
+                </Link>
+              </div>
+              <nav
+                aria-label="모바일 내비게이션"
+                className="flex flex-col gap-5 text-base font-medium"
+              >
                 {NAV_ITEMS.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-foreground/70 transition-colors hover:text-foreground"
+                    className="rounded-sm py-2 text-foreground/80 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     {item.label}
                   </Link>
