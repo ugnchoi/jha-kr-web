@@ -64,7 +64,7 @@ export default async function FaqPage() {
       <div className="container space-y-12 py-16">
         {data.body && (
           <section className="prose prose-zinc mx-auto max-w-2xl text-center dark:prose-invert">
-            <PortableText value={data.body} components={portableTextComponents} />
+            <PortableText value={data.body ?? []} components={portableTextComponents} />
           </section>
         )}
 
@@ -80,7 +80,7 @@ export default async function FaqPage() {
                 </summary>
                 {faq.answer && (
                   <div className="prose prose-zinc mt-3 text-sm text-muted-foreground dark:prose-invert">
-                    <PortableText value={faq.answer} components={portableTextComponents} />
+                    <PortableText value={faq.answer ?? []} components={portableTextComponents} />
                   </div>
                 )}
               </details>

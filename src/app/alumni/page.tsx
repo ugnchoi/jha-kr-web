@@ -64,7 +64,7 @@ export default async function AlumniPage() {
       <div className="container space-y-16 py-16">
         {data.body && (
           <section className="prose prose-zinc mx-auto max-w-3xl text-center dark:prose-invert">
-            <PortableText value={data.body} components={portableTextComponents} />
+            <PortableText value={data.body ?? []} components={portableTextComponents} />
           </section>
         )}
 

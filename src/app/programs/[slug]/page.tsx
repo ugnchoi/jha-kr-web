@@ -75,7 +75,10 @@ export default async function ProgramPage({ params }: Props) {
               </p>
             )}
             <div className="prose prose-zinc dark:prose-invert lg:prose-lg max-w-none">
-              <PortableText value={program.content} components={portableTextComponents} />
+              <PortableText
+                value={program.content ?? []}
+                components={portableTextComponents}
+              />
             </div>
           </div>
 
