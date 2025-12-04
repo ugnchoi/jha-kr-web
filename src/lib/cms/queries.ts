@@ -61,6 +61,12 @@ export const programQuery = groq`
   }
 `;
 
+export const programSlugsQuery = groq`
+  *[_type == "program" && defined(slug.current)]{
+    "slug": slug.current
+  }
+`;
+
 export const admissionsPageQuery = groq`
   *[_type == "admissionsPage"][0] {
     heroTitle,

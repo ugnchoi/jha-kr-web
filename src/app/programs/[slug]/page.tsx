@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { programQuery } from "@/lib/cms/queries";
+import { programQuery, programSlugsQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { Button } from "@/components/ui/button";
 import type { SanityImageSource } from "@sanity/image-url";
@@ -16,13 +16,19 @@ interface Program {
 }
 
 interface Props {
-  params: { slug: string };
+  params: { slug?: string | string[] };
 }
 
 export default async function ProgramPage({ params }: Props) {
+  const slugParam = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
+
+  if (!slugParam) {
+    notFound();
+  }
+
   const program = await sanityFetch<Program>({
     query: programQuery,
-    params: { slug: params.slug },
+    params: { slug: slugParam },
     tags: ["program"],
   });
 
@@ -88,5 +94,20 @@ export default async function ProgramPage({ params }: Props) {
       </div>
     </article>
   );
+}
+
+export async function generateStaticParams() {
+  const programs = await sanityFetch<{ slug?: string }[]>({
+    query: programSlugsQuery,
+    tags: ["program"],
+  });
+
+  if (!programs?.length) {
+    return [];
+  }
+
+  return programs
+    ?.filter((program): program is { slug: string } => Boolean(program.slug))
+    .map((program) => ({ slug: program.slug }));
 }
 
