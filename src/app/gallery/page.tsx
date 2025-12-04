@@ -4,10 +4,13 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { generalPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
 
-type GalleryImage = SanityImageSource & {
-  caption?: string;
-  alt?: string;
-};
+type GalleryImage =
+  | null
+  | undefined
+  | (SanityImageSource & {
+      caption?: string;
+      alt?: string;
+    });
 
 interface GalleryPageData {
   heroTitle: string;
@@ -71,20 +74,27 @@ export default async function GalleryPage() {
           <section>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {data.gallery.map((image, index) => {
-                if (!image?.asset?._ref) {
+                if (!image || typeof image === "string") {
+                  return null;
+                }
+                const assetRef =
+                  typeof image === "object" && "asset" in image
+                    ? image.asset?._ref
+                    : undefined;
+                if (!assetRef) {
                   return null;
                 }
                 return (
                   <figure
-                    key={`${image.asset._ref}-${index}`}
+                    key={`${assetRef}-${index}`}
                     className="overflow-hidden rounded-2xl border bg-card/70 shadow-sm"
                   >
                     <img
                       src={urlFor(image).width(800).height(600).fit("crop").url()}
-                      alt={image.alt || data.heroTitle}
+                      alt={typeof image === "object" ? image.alt || data.heroTitle : data.heroTitle}
                       className="h-64 w-full object-cover"
                     />
-                    {image.caption && (
+                    {typeof image === "object" && image.caption && (
                       <figcaption className="px-4 py-3 text-sm text-muted-foreground">
                         {image.caption}
                       </figcaption>
