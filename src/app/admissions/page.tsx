@@ -52,7 +52,7 @@ export default async function AdmissionsPage() {
   }
 
   const heroImage = data.heroImage ? urlFor(data.heroImage).width(1920).height(960).url() : null;
-  const ctaLabel = data.ctaLabel ?? "Start Application";
+  const ctaLabel = data.ctaLabel ?? "입학 지원 시작하기";
   const ctaHref = data.ctaLink ?? DEFAULT_CTA_LINK;
 
   return (

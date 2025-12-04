@@ -53,7 +53,7 @@ export function ActivityCard({
           href={`/activities#${slug}`}
           className="text-sm font-semibold text-primary hover:underline"
         >
-          Learn More
+          자세히 보기
         </Link>
       </CardFooter>
     </Card>

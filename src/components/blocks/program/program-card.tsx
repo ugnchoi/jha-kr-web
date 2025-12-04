@@ -37,7 +37,7 @@ export function ProgramCard({ title, titleEn, slug, description, mainImage }: Pr
       </CardContent>
       <CardFooter className="p-6 pt-4">
         <Button asChild className="w-full">
-          <Link href={`/programs/${slug}`}>View Program</Link>
+          <Link href={`/programs/${slug}`}>프로그램 살펴보기</Link>
         </Button>
       </CardFooter>
     </Card>

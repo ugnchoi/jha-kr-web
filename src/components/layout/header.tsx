@@ -77,7 +77,7 @@ export function Header() {
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="flex items-center">
             <Button asChild variant="default" size="sm">
-              <Link href="/admissions">Apply Now</Link>
+              <Link href="/admissions">입학 지원하기</Link>
             </Button>
           </nav>
         </div>

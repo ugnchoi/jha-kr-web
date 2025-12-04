@@ -54,7 +54,7 @@ export function CoopCard({
           href={`/coop/${slug}`}
           className="text-sm font-semibold text-primary hover:underline"
         >
-          View Co-op
+          코업 자세히 보기
         </Link>
       </CardFooter>
     </Card>

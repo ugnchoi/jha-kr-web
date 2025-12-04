@@ -14,61 +14,61 @@ export function Footer() {
             </p>
           </div>
           <div>
-            <h3 className="mb-4 text-sm font-semibold">About</h3>
+            <h3 className="mb-4 text-sm font-semibold">소개</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li>
                 <Link href="/about" className="hover:text-foreground">
-                  Our Mission
+                  사명
                 </Link>
               </li>
               <li>
                 <Link href="/about/history" className="hover:text-foreground">
-                  History
+                  연혁
                 </Link>
               </li>
               <li>
                 <Link href="/alumni" className="hover:text-foreground">
-                  Alumni
+                  동문
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="mb-4 text-sm font-semibold">Programs</h3>
+            <h3 className="mb-4 text-sm font-semibold">프로그램</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li>
                 <Link href="/programs" className="hover:text-foreground">
-                  All Programs
+                  전체 프로그램
                 </Link>
               </li>
               <li>
                 <Link href="/coop" className="hover:text-foreground">
-                  Co-op
+                  코업
                 </Link>
               </li>
               <li>
                 <Link href="/activities" className="hover:text-foreground">
-                  Activities
+                  활동
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="mb-4 text-sm font-semibold">Connect</h3>
+            <h3 className="mb-4 text-sm font-semibold">소식 · 문의</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li>
                 <Link href="/news" className="hover:text-foreground">
-                  News & Events
+                  소식 및 행사
                 </Link>
               </li>
               <li>
                 <Link href="/faq" className="hover:text-foreground">
-                  FAQ
+                  자주 묻는 질문
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-foreground">
-                  Contact Us
+                  문의하기
                 </Link>
               </li>
             </ul>
@@ -80,10 +80,10 @@ export function Footer() {
           </p>
           <div className="flex gap-4 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground">
-              Privacy Policy
+              개인정보 처리방침
             </Link>
             <Link href="/terms" className="hover:text-foreground">
-              Terms of Service
+              이용 약관
             </Link>
           </div>
         </div>
