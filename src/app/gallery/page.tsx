@@ -4,10 +4,10 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { generalPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
 
-interface GalleryImage extends SanityImageSource {
+type GalleryImage = SanityImageSource & {
   caption?: string;
   alt?: string;
-}
+};
 
 interface GalleryPageData {
   heroTitle: string;
