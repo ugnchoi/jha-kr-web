@@ -1,5 +1,6 @@
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
+import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { generalPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
@@ -13,7 +14,7 @@ interface AboutPageData {
   heroTitle: string;
   heroSubtitle?: string;
   heroImage?: SanityImageSource;
-  body?: any;
+  body?: PortableTextContent;
   highlights?: Highlight[];
 }
 
@@ -63,7 +64,7 @@ export default async function AboutPage() {
       <div className="container space-y-16 py-16">
         {data.body && (
           <section className="prose prose-zinc mx-auto max-w-3xl dark:prose-invert lg:prose-lg">
-            <PortableText value={data.body} />
+            <PortableText value={data.body} components={portableTextComponents} />
           </section>
         )}
 

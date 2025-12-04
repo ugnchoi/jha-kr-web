@@ -1,17 +1,19 @@
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { PortableText } from "@portabletext/react";
-import { sanityFetch } from "@/sanity/lib/fetch";
-import { postQuery } from "@/lib/cms/queries";
-import { urlFor } from "@/sanity/lib/image";
-import { Badge } from "@/components/ui/badge";
 import type { SanityImageSource } from "@sanity/image-url";
+import { Badge } from "@/components/ui/badge";
+import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
+import { sanityFetch } from "@/sanity/lib/fetch";
+import { postQuery, postSlugsQuery } from "@/lib/cms/queries";
+import { SlugDocument, buildStaticSlugParams, normalizeSlugParam } from "@/lib/utils/slug";
+import { urlFor } from "@/sanity/lib/image";
 
 interface Post {
   title: string;
   publishedAt: string;
   mainImage?: SanityImageSource;
-  body: any;
+  body: PortableTextContent;
   author?: {
     name: string;
     image?: SanityImageSource;
@@ -20,13 +22,20 @@ interface Post {
 }
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug?: string | string[] }>;
 }
 
 export default async function PostPage({ params }: Props) {
+  const { slug } = await params;
+  const slugParam = normalizeSlugParam(slug);
+
+  if (!slugParam) {
+    notFound();
+  }
+
   const post = await sanityFetch<Post>({
     query: postQuery,
-    params: { slug: params.slug },
+    params: { slug: slugParam },
     tags: ["post"],
   });
 
@@ -78,7 +87,7 @@ export default async function PostPage({ params }: Props) {
 
       {post.body ? (
         <div className="prose prose-zinc dark:prose-invert lg:prose-lg mx-auto">
-          <PortableText value={post.body} />
+          <PortableText value={post.body} components={portableTextComponents} />
         </div>
       ) : (
         <p className="mx-auto max-w-2xl text-center text-muted-foreground">
@@ -87,5 +96,14 @@ export default async function PostPage({ params }: Props) {
       )}
     </article>
   );
+}
+
+export async function generateStaticParams() {
+  const posts = await sanityFetch<SlugDocument[]>({
+    query: postSlugsQuery,
+    tags: ["post"],
+  });
+
+  return buildStaticSlugParams(posts);
 }
 

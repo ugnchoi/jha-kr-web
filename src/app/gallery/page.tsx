@@ -1,5 +1,6 @@
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
+import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { generalPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
@@ -16,7 +17,7 @@ interface GalleryPageData {
   heroTitle: string;
   heroSubtitle?: string;
   heroImage?: SanityImageSource;
-  body?: any;
+  body?: PortableTextContent;
   gallery?: GalleryImage[];
 }
 
@@ -66,7 +67,7 @@ export default async function GalleryPage() {
       <div className="container space-y-12 py-16">
         {data.body && (
           <section className="prose prose-zinc mx-auto max-w-2xl text-center dark:prose-invert">
-            <PortableText value={data.body} />
+            <PortableText value={data.body} components={portableTextComponents} />
           </section>
         )}
 

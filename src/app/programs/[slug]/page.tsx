@@ -1,26 +1,29 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { PortableText } from "@portabletext/react";
+import type { SanityImageSource } from "@sanity/image-url";
+import { Button } from "@/components/ui/button";
+import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { programQuery, programSlugsQuery } from "@/lib/cms/queries";
+import { SlugDocument, buildStaticSlugParams, normalizeSlugParam } from "@/lib/utils/slug";
 import { urlFor } from "@/sanity/lib/image";
-import { Button } from "@/components/ui/button";
-import type { SanityImageSource } from "@sanity/image-url";
-import Link from "next/link";
 
 interface Program {
   title: string;
   titleEn?: string;
   description?: string;
   mainImage?: SanityImageSource;
-  content: any;
+  content: PortableTextContent;
 }
 
 interface Props {
-  params: { slug?: string | string[] };
+  params: Promise<{ slug?: string | string[] }>;
 }
 
 export default async function ProgramPage({ params }: Props) {
-  const slugParam = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
+  const { slug } = await params;
+  const slugParam = normalizeSlugParam(slug);
 
   if (!slugParam) {
     notFound();
@@ -72,7 +75,7 @@ export default async function ProgramPage({ params }: Props) {
               </p>
             )}
             <div className="prose prose-zinc dark:prose-invert lg:prose-lg max-w-none">
-              <PortableText value={program.content} />
+              <PortableText value={program.content} components={portableTextComponents} />
             </div>
           </div>
 
@@ -97,17 +100,11 @@ export default async function ProgramPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const programs = await sanityFetch<{ slug?: string }[]>({
+  const programs = await sanityFetch<SlugDocument[]>({
     query: programSlugsQuery,
     tags: ["program"],
   });
 
-  if (!programs?.length) {
-    return [];
-  }
-
-  return programs
-    ?.filter((program): program is { slug: string } => Boolean(program.slug))
-    .map((program) => ({ slug: program.slug }));
+  return buildStaticSlugParams(programs);
 }
 

@@ -3,13 +3,19 @@ import { homePageQuery } from "@/lib/cms/queries";
 import { Hero } from "@/components/blocks/hero";
 import type { SanityImageSource } from "@sanity/image-url";
 
+type FeaturedNewsItem = {
+  _id?: string;
+  title: string;
+  slug?: string | null;
+};
+
 interface HomePageData {
   heroTitle: string;
   heroSubtitle?: string;
   heroImage: SanityImageSource;
   heroCtaLabel?: string;
   heroCtaLink?: string;
-  featuredNews?: any[]; // We can define strict types later
+  featuredNews?: FeaturedNewsItem[];
 }
 
 export default async function Home() {
@@ -44,15 +50,18 @@ export default async function Home() {
       <section className="container py-16">
         <h2 className="mb-8 text-3xl font-bold tracking-tight">Latest News</h2>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-           {data.featuredNews?.length ? (
-             data.featuredNews.map((news) => (
-               <div key={news.slug?.current} className="rounded-lg border p-4">
-                 <h3 className="font-bold">{news.title}</h3>
-               </div>
-             ))
-           ) : (
-             <p className="text-muted-foreground">No news yet.</p>
-           )}
+          {data.featuredNews?.length ? (
+            data.featuredNews.map((news, index) => (
+              <div
+                key={news.slug ?? news._id ?? `featured-news-${index}`}
+                className="rounded-lg border p-4"
+              >
+                <h3 className="font-bold">{news.title}</h3>
+              </div>
+            ))
+          ) : (
+            <p className="text-muted-foreground">No news yet.</p>
+          )}
         </div>
       </section>
     </div>

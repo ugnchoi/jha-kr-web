@@ -1,19 +1,20 @@
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
+import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { generalPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
 
 interface FaqItem {
   question?: string;
-  answer?: any;
+  answer?: PortableTextContent;
 }
 
 interface FaqPageData {
   heroTitle: string;
   heroSubtitle?: string;
   heroImage?: SanityImageSource;
-  body?: any;
+  body?: PortableTextContent;
   faqItems?: FaqItem[];
 }
 
@@ -63,7 +64,7 @@ export default async function FaqPage() {
       <div className="container space-y-12 py-16">
         {data.body && (
           <section className="prose prose-zinc mx-auto max-w-2xl text-center dark:prose-invert">
-            <PortableText value={data.body} />
+            <PortableText value={data.body} components={portableTextComponents} />
           </section>
         )}
 
@@ -79,7 +80,7 @@ export default async function FaqPage() {
                 </summary>
                 {faq.answer && (
                   <div className="prose prose-zinc mt-3 text-sm text-muted-foreground dark:prose-invert">
-                    <PortableText value={faq.answer} />
+                    <PortableText value={faq.answer} components={portableTextComponents} />
                   </div>
                 )}
               </details>

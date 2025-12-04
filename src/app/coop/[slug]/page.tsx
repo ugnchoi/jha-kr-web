@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { SanityImageSource } from "@sanity/image-url";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { coopQuery } from "@/lib/cms/queries";
+import { coopQuery, coopSlugsQuery } from "@/lib/cms/queries";
+import { SlugDocument, buildStaticSlugParams, normalizeSlugParam } from "@/lib/utils/slug";
 import { urlFor } from "@/sanity/lib/image";
 import { Badge } from "@/components/ui/badge";
 import { ActivityCard } from "@/components/blocks/activity/activity-card";
@@ -27,13 +28,20 @@ interface CoopData {
 }
 
 interface CoopPageProps {
-  params: { slug: string };
+  params: Promise<{ slug?: string | string[] }>;
 }
 
 export default async function CoopDetailPage({ params }: CoopPageProps) {
+  const { slug } = await params;
+  const slugParam = normalizeSlugParam(slug);
+
+  if (!slugParam) {
+    notFound();
+  }
+
   const data = await sanityFetch<CoopData>({
     query: coopQuery,
-    params: { slug: params.slug },
+    params: { slug: slugParam },
     tags: ["coop"],
   });
 
@@ -141,5 +149,14 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
       </div>
     </article>
   );
+}
+
+export async function generateStaticParams() {
+  const coops = await sanityFetch<SlugDocument[]>({
+    query: coopSlugsQuery,
+    tags: ["coop"],
+  });
+
+  return buildStaticSlugParams(coops);
 }
 

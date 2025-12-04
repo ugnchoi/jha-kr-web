@@ -23,6 +23,12 @@ export const postQuery = groq`
   }
 `;
 
+export const postSlugsQuery = groq`
+  *[_type == "post" && defined(slug.current)]{
+    "slug": slug.current
+  }
+`;
+
 export const homePageQuery = groq`
   *[_type == "homePage"][0] {
     heroTitle,
@@ -110,6 +116,12 @@ export const coopQuery = groq`
       description,
       featuredImage
     }
+  }
+`;
+
+export const coopSlugsQuery = groq`
+  *[_type == "coop" && defined(slug.current)]{
+    "slug": slug.current
   }
 `;
 
