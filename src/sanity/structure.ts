@@ -31,10 +31,18 @@ export const structure: StructureResolver = (S) =>
               .initialValueTemplate("generalPageByKey", { pageKey: page.pageKey })
           )
       ),
+      S.listItem()
+        .title("Admissions Page")
+        .id("admissionsPage")
+        .child(
+          S.document()
+            .schemaType("admissionsPage")
+            .documentId("admissionsPage")
+        ),
       S.divider(),
       ...S.documentTypeListItems().filter(
         (listItem) =>
-          !["media.tag", "settings", "homePage", "generalPage"].includes(
+          !["media.tag", "settings", "homePage", "generalPage", "admissionsPage"].includes(
             listItem.getId() || ""
           )
       ),
