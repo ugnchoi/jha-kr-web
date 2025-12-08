@@ -74,7 +74,7 @@ export const programSlugsQuery = groq`
 `;
 
 export const admissionsPageQuery = groq`
-  *[_type == "admissionsPage"][0] {
+  *[_type == "admissionsPage" && _id == "admissionsPage"][0]{
     heroTitle,
     heroSubtitle,
     heroImage,

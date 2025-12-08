@@ -21,7 +21,6 @@ export const portableTextComponents: PortableTextComponents = {
 
       const imageUrl = urlFor(value)
         .width(1600)
-        .height(900)
         .fit("max")
         .auto("format")
         .url();
