@@ -58,6 +58,11 @@ export const post = defineType({
       title: "Body",
       type: "blockContent", // We need to define this object
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
 });
 

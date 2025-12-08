@@ -1,9 +1,14 @@
+import { cache } from "react";
+import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
 import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { generalPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
 
 interface Highlight {
   title?: string;
@@ -16,16 +21,33 @@ interface AboutPageData {
   heroImage?: SanityImageSource;
   body?: PortableTextContent;
   highlights?: Highlight[];
+  seo?: SeoFieldset | null;
 }
 
 const PAGE_KEY = "about";
 
-export default async function AboutPage() {
-  const data = await sanityFetch<AboutPageData>({
+const getAboutPageData = cache(async () => {
+  return sanityFetch<AboutPageData>({
     query: generalPageQuery,
     params: { pageKey: PAGE_KEY },
     tags: ["generalPage", `generalPage:${PAGE_KEY}`],
   });
+});
+
+export const generateMetadata = async () => {
+  const data = await getAboutPageData();
+
+  return buildSeoMetadata({
+    seo: data?.seo,
+    defaultTitle: data?.heroTitle ?? "About",
+    defaultDescription: data?.heroSubtitle,
+    canonicalPath: "/about",
+    fallbackOgImage: data?.heroImage,
+  });
+};
+
+export default async function AboutPage() {
+  const data = await getAboutPageData();
 
   if (!data) {
     return (
@@ -42,10 +64,13 @@ export default async function AboutPage() {
     <article>
       <section className="relative flex min-h-[360px] items-center justify-center overflow-hidden bg-muted">
         {data.heroImage && (
-          <img
+          <Image
             src={urlFor(data.heroImage).width(1920).height(900).url()}
             alt={data.heroTitle}
-            className="absolute inset-0 h-full w-full object-cover"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
           />
         )}
         <div className="absolute inset-0 bg-black/60" />
@@ -90,6 +115,12 @@ export default async function AboutPage() {
             </div>
           </section>
         ) : null}
+        <JsonLd
+          data={breadcrumbJsonLd([
+            { name: "홈", url: buildCanonicalUrl("/") },
+            { name: data.heroTitle, url: buildCanonicalUrl("/about") },
+          ])}
+        />
       </div>
     </article>
   );

@@ -48,6 +48,11 @@ export const homePage = defineType({
       of: [{ type: "reference", to: { type: "post" } }],
       validation: (rule) => rule.max(3),
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
   preview: {
     select: {

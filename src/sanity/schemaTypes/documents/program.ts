@@ -43,6 +43,11 @@ export const program = defineType({
       title: "Content",
       type: "blockContent",
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
 });
 

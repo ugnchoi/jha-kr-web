@@ -1,9 +1,14 @@
+import { cache } from "react";
+import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
 import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { generalPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
 
 type GalleryImage =
   | null
@@ -19,16 +24,33 @@ interface GalleryPageData {
   heroImage?: SanityImageSource;
   body?: PortableTextContent;
   gallery?: GalleryImage[];
+  seo?: SeoFieldset | null;
 }
 
 const PAGE_KEY = "gallery";
 
-export default async function GalleryPage() {
-  const data = await sanityFetch<GalleryPageData>({
+const getGalleryPageData = cache(async () => {
+  return sanityFetch<GalleryPageData>({
     query: generalPageQuery,
     params: { pageKey: PAGE_KEY },
     tags: ["generalPage", `generalPage:${PAGE_KEY}`],
   });
+});
+
+export const generateMetadata = async () => {
+  const data = await getGalleryPageData();
+
+  return buildSeoMetadata({
+    seo: data?.seo,
+    defaultTitle: data?.heroTitle ?? "Gallery",
+    defaultDescription: data?.heroSubtitle,
+    canonicalPath: "/gallery",
+    fallbackOgImage: data?.heroImage,
+  });
+};
+
+export default async function GalleryPage() {
+  const data = await getGalleryPageData();
 
   if (!data) {
     return (
@@ -45,10 +67,13 @@ export default async function GalleryPage() {
     <article>
       <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-muted">
         {data.heroImage && (
-          <img
+          <Image
             src={urlFor(data.heroImage).width(1920).height(800).url()}
             alt={data.heroTitle}
-            className="absolute inset-0 h-full w-full object-cover"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
           />
         )}
         <div className="absolute inset-0 bg-black/60" />
@@ -90,9 +115,13 @@ export default async function GalleryPage() {
                     key={`${assetRef}-${index}`}
                     className="overflow-hidden rounded-2xl border bg-card/70 shadow-sm"
                   >
-                    <img
+                    <Image
                       src={urlFor(image).width(800).height(600).fit("crop").url()}
-                      alt={typeof image === "object" ? image.alt || data.heroTitle : data.heroTitle}
+                      alt={
+                        typeof image === "object" ? image.alt || data.heroTitle : data.heroTitle
+                      }
+                      width={800}
+                      height={600}
                       className="h-64 w-full object-cover"
                     />
                     {typeof image === "object" && image.caption && (
@@ -110,6 +139,12 @@ export default async function GalleryPage() {
             No gallery entries yet. Upload photos in Sanity to curate this space.
           </p>
         )}
+        <JsonLd
+          data={breadcrumbJsonLd([
+            { name: "홈", url: buildCanonicalUrl("/") },
+            { name: data.heroTitle, url: buildCanonicalUrl("/gallery") },
+          ])}
+        />
       </div>
     </article>
   );

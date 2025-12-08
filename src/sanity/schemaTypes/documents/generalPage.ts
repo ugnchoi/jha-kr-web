@@ -121,6 +121,11 @@ export const generalPage = defineType({
         },
       ],
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
   preview: {
     select: { title: "heroTitle", subtitle: "pageKey" },

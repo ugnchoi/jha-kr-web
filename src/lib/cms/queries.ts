@@ -15,11 +15,13 @@ export const postsQuery = groq`
 export const postQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     title,
+    "slug": slug.current,
     publishedAt,
     mainImage,
     body,
     "author": author->{name, image},
-    "categories": categories[]->title
+    "categories": categories[]->title,
+    seo
   }
 `;
 
@@ -42,7 +44,8 @@ export const homePageQuery = groq`
       publishedAt,
       mainImage,
       "categories": categories[]->title
-    }
+    },
+    seo
   }
 `;
 
@@ -61,9 +64,11 @@ export const programQuery = groq`
   *[_type == "program" && slug.current == $slug][0] {
     title,
     titleEn,
+    "slug": slug.current,
     description,
     mainImage,
-    content
+    content,
+    seo
   }
 `;
 
@@ -84,7 +89,8 @@ export const admissionsPageQuery = groq`
     checklist,
     timeline,
     contactEmail,
-    contactPhone
+    contactPhone,
+    seo
   }
 `;
 
@@ -101,6 +107,7 @@ export const coopsQuery = groq`
 export const coopQuery = groq`
   *[_type == "coop" && slug.current == $slug][0] {
     title,
+    "slug": slug.current,
     day,
     description,
     heroImage,
@@ -115,7 +122,8 @@ export const coopQuery = groq`
       category,
       description,
       featuredImage
-    }
+    },
+    seo
   }
 `;
 
@@ -137,6 +145,7 @@ export const activitiesQuery = groq`
 
 export const generalPageQuery = groq`
   *[_type == "generalPage" && pageKey == $pageKey][0] {
+    pageKey,
     heroTitle,
     heroSubtitle,
     heroImage,
@@ -146,6 +155,7 @@ export const generalPageQuery = groq`
       question,
       answer
     },
-    gallery
+    gallery,
+    seo
   }
 `;

@@ -1,3 +1,5 @@
+import { cache } from "react";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { PortableText } from "@portabletext/react";
@@ -8,6 +10,9 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { postQuery, postSlugsQuery } from "@/lib/cms/queries";
 import { SlugDocument, buildStaticSlugParams, normalizeSlugParam } from "@/lib/utils/slug";
 import { urlFor } from "@/sanity/lib/image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
 
 interface Post {
   title: string;
@@ -19,11 +24,44 @@ interface Post {
     image?: SanityImageSource;
   };
   categories?: string[];
+  slug?: string;
+  seo?: SeoFieldset | null;
 }
 
 interface Props {
   params: Promise<{ slug?: string | string[] }>;
 }
+
+const getPost = cache(async (slug: string) =>
+  sanityFetch<Post>({
+    query: postQuery,
+    params: { slug },
+    tags: ["post"],
+  })
+);
+
+export const generateMetadata = async ({ params }: Props) => {
+  const { slug } = await params;
+  const slugParam = normalizeSlugParam(slug);
+
+  if (!slugParam) {
+    return {};
+  }
+
+  const post = await getPost(slugParam);
+
+  if (!post) {
+    return {};
+  }
+
+  return buildSeoMetadata({
+    seo: post.seo,
+    defaultTitle: post.title,
+    defaultDescription: post.categories?.join(", "),
+    canonicalPath: `/news/${slugParam}`,
+    fallbackOgImage: post.mainImage,
+  });
+};
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
@@ -33,11 +71,7 @@ export default async function PostPage({ params }: Props) {
     notFound();
   }
 
-  const post = await sanityFetch<Post>({
-    query: postQuery,
-    params: { slug: slugParam },
-    tags: ["post"],
-  });
+  const post = await getPost(slugParam);
 
   if (!post) {
     notFound();
@@ -60,11 +94,13 @@ export default async function PostPage({ params }: Props) {
           {post.author && (
             <div className="flex items-center gap-2">
               {post.author.image && (
-                 <img
-                    src={urlFor(post.author.image).width(40).height(40).url()}
-                    alt={post.author.name}
-                    className="h-10 w-10 rounded-full object-cover"
-                 />
+                <Image
+                  src={urlFor(post.author.image).width(80).height(80).url()}
+                  alt={post.author.name}
+                  width={40}
+                  height={40}
+                  className="rounded-full object-cover"
+                />
               )}
               <span>{post.author.name}</span>
             </div>
@@ -77,10 +113,13 @@ export default async function PostPage({ params }: Props) {
 
       {post.mainImage && (
         <div className="mb-10 overflow-hidden rounded-lg border bg-muted">
-          <img
+          <Image
             src={urlFor(post.mainImage).width(1200).height(630).url()}
             alt={post.title}
-            className="w-full object-cover"
+            width={1200}
+            height={630}
+            className="h-auto w-full object-cover"
+            priority
           />
         </div>
       )}
@@ -94,6 +133,24 @@ export default async function PostPage({ params }: Props) {
           This story is coming soon—check back shortly.
         </p>
       )}
+      <JsonLd
+        data={articleJsonLd({
+          title: post.title,
+          description: post.categories?.join(", "),
+          url: buildCanonicalUrl(`/news/${slugParam}`),
+          publishedAt: post.publishedAt,
+          image: post.mainImage
+            ? urlFor(post.mainImage).width(1200).height(630).url()
+            : undefined,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "홈", url: buildCanonicalUrl("/") },
+          { name: "소식", url: buildCanonicalUrl("/news") },
+          { name: post.title, url: buildCanonicalUrl(`/news/${slugParam}`) },
+        ])}
+      />
     </article>
   );
 }

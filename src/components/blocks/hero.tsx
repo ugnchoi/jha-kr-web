@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 import { Button } from "@/components/ui/button";
@@ -12,16 +13,23 @@ interface HeroProps {
 }
 
 export function Hero({ title, subtitle, image, ctaLabel, ctaLink }: HeroProps) {
+  const heroImageUrl = image
+    ? urlFor(image).width(1920).height(1080).quality(80).url()
+    : null;
+
   return (
     <section className="relative flex min-h-[600px] w-full items-center justify-center overflow-hidden bg-background">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 z-10 bg-black/40" />
-        {image && (
-          <img
-            src={urlFor(image).width(1920).height(1080).quality(80).url()}
+        {heroImageUrl && (
+          <Image
+            src={heroImageUrl}
             alt={title}
-            className="h-full w-full object-cover"
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover"
           />
         )}
       </div>

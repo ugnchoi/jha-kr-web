@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { SanityImageSource } from "@sanity/image-url";
 import { urlFor } from "@/sanity/lib/image";
@@ -19,18 +20,26 @@ export function ActivityCard({
   description,
   featuredImage,
 }: ActivityCardProps) {
+  const imageUrl = featuredImage
+    ? urlFor(featuredImage).width(600).height(400).url()
+    : null;
+
   return (
     <Card className="flex h-full flex-col overflow-hidden transition-all hover:shadow-lg">
       <Link
         href={`/activities#${slug}`}
         className="block h-48 overflow-hidden bg-muted"
       >
-        {featuredImage ? (
-          <img
-            src={urlFor(featuredImage).width(600).height(400).url()}
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-          />
+        {imageUrl ? (
+          <div className="relative h-full w-full">
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover transition-transform duration-300 hover:scale-105"
+            />
+          </div>
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
             No Image

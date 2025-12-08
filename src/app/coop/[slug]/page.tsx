@@ -1,3 +1,5 @@
+import { cache } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { SanityImageSource } from "@sanity/image-url";
@@ -7,9 +9,13 @@ import { SlugDocument, buildStaticSlugParams, normalizeSlugParam } from "@/lib/u
 import { urlFor } from "@/sanity/lib/image";
 import { Badge } from "@/components/ui/badge";
 import { ActivityCard } from "@/components/blocks/activity/activity-card";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
 
 interface CoopData {
   title: string;
+  slug?: string;
   day?: string;
   description?: string;
   heroImage?: SanityImageSource;
@@ -25,11 +31,43 @@ interface CoopData {
     description?: string;
     featuredImage?: SanityImageSource;
   }[];
+  seo?: SeoFieldset | null;
 }
 
 interface CoopPageProps {
   params: Promise<{ slug?: string | string[] }>;
 }
+
+const getCoop = cache(async (slug: string) =>
+  sanityFetch<CoopData>({
+    query: coopQuery,
+    params: { slug },
+    tags: ["coop"],
+  })
+);
+
+export const generateMetadata = async ({ params }: CoopPageProps) => {
+  const { slug } = await params;
+  const slugParam = normalizeSlugParam(slug);
+
+  if (!slugParam) {
+    return {};
+  }
+
+  const data = await getCoop(slugParam);
+
+  if (!data) {
+    return {};
+  }
+
+  return buildSeoMetadata({
+    seo: data.seo,
+    defaultTitle: data.title,
+    defaultDescription: data.description,
+    canonicalPath: `/coop/${slugParam}`,
+    fallbackOgImage: data.heroImage,
+  });
+};
 
 export default async function CoopDetailPage({ params }: CoopPageProps) {
   const { slug } = await params;
@@ -39,11 +77,7 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
     notFound();
   }
 
-  const data = await sanityFetch<CoopData>({
-    query: coopQuery,
-    params: { slug: slugParam },
-    tags: ["coop"],
-  });
+  const data = await getCoop(slugParam);
 
   if (!data) {
     notFound();
@@ -53,10 +87,13 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
     <article>
       <div className="relative flex min-h-[400px] w-full items-center justify-center overflow-hidden bg-muted">
         {data.heroImage && (
-          <img
+          <Image
             src={urlFor(data.heroImage).width(1920).height(800).url()}
             alt={data.title}
-            className="absolute inset-0 h-full w-full object-cover"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
           />
         )}
         <div className="absolute inset-0 bg-black/50" />
@@ -147,6 +184,13 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
           </aside>
         </div>
       </div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "홈", url: buildCanonicalUrl("/") },
+          { name: "코업", url: buildCanonicalUrl("/coop") },
+          { name: data.title, url: buildCanonicalUrl(`/coop/${slugParam}`) },
+        ])}
+      />
     </article>
   );
 }

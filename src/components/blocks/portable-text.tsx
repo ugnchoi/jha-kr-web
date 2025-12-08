@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { urlFor } from "@/sanity/lib/image";
@@ -38,11 +39,12 @@ export const portableTextComponents: PortableTextComponents = {
           role="img"
           aria-label={alt}
         >
-          <img
+          <Image
             src={imageUrl}
             alt={alt}
+            width={1600}
+            height={900}
             className="h-auto w-full object-cover"
-            loading="lazy"
           />
           {value.alt && (
             <figcaption className="bg-background/80 px-4 py-2 text-center text-sm text-muted-foreground">

@@ -59,6 +59,11 @@ export const coop = defineType({
       of: [{ type: "reference", to: { type: "activity" } }],
       validation: (rule) => rule.max(6),
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
 });
 

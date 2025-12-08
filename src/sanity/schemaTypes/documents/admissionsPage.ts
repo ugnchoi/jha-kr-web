@@ -101,6 +101,11 @@ export const admissionsPage = defineType({
       title: "Contact Phone",
       type: "string",
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
 });
 

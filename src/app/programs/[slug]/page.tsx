@@ -1,4 +1,6 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
@@ -8,6 +10,9 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { programQuery, programSlugsQuery } from "@/lib/cms/queries";
 import { SlugDocument, buildStaticSlugParams, normalizeSlugParam } from "@/lib/utils/slug";
 import { urlFor } from "@/sanity/lib/image";
+import { JsonLd } from "@/components/seo/json-ld";
+import { courseJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
 
 interface Program {
   title: string;
@@ -15,11 +20,44 @@ interface Program {
   description?: string;
   mainImage?: SanityImageSource;
   content: PortableTextContent;
+  slug?: string;
+  seo?: SeoFieldset | null;
 }
 
 interface Props {
   params: Promise<{ slug?: string | string[] }>;
 }
+
+const getProgram = cache(async (slug: string) =>
+  sanityFetch<Program>({
+    query: programQuery,
+    params: { slug },
+    tags: ["program"],
+  })
+);
+
+export const generateMetadata = async ({ params }: Props) => {
+  const { slug } = await params;
+  const slugParam = normalizeSlugParam(slug);
+
+  if (!slugParam) {
+    return {};
+  }
+
+  const program = await getProgram(slugParam);
+
+  if (!program) {
+    return {};
+  }
+
+  return buildSeoMetadata({
+    seo: program.seo,
+    defaultTitle: program.title,
+    defaultDescription: program.description,
+    canonicalPath: `/programs/${slugParam}`,
+    fallbackOgImage: program.mainImage,
+  });
+};
 
 export default async function ProgramPage({ params }: Props) {
   const { slug } = await params;
@@ -29,11 +67,7 @@ export default async function ProgramPage({ params }: Props) {
     notFound();
   }
 
-  const program = await sanityFetch<Program>({
-    query: programQuery,
-    params: { slug: slugParam },
-    tags: ["program"],
-  });
+  const program = await getProgram(slugParam);
 
   if (!program) {
     notFound();
@@ -46,10 +80,13 @@ export default async function ProgramPage({ params }: Props) {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 z-10 bg-black/50" />
           {program.mainImage && (
-            <img
+            <Image
               src={urlFor(program.mainImage).width(1920).height(1080).url()}
               alt={program.title}
-              className="h-full w-full object-cover"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority
             />
           )}
         </div>
@@ -98,6 +135,20 @@ export default async function ProgramPage({ params }: Props) {
           </aside>
         </div>
       </div>
+      <JsonLd
+        data={courseJsonLd({
+          name: program.title,
+          description: program.description,
+          url: buildCanonicalUrl(`/programs/${slugParam}`),
+        })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "홈", url: buildCanonicalUrl("/") },
+          { name: "프로그램", url: buildCanonicalUrl("/programs") },
+          { name: program.title, url: buildCanonicalUrl(`/programs/${slugParam}`) },
+        ])}
+      />
     </article>
   );
 }

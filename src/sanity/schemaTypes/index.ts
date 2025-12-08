@@ -1,6 +1,7 @@
 import type { SchemaTypeDefinition, Template } from "sanity";
 
 import { blockContent } from "./objects/blockContent";
+import { seoFields } from "./objects/seoFields";
 import { category } from "./documents/category";
 import { post } from "./documents/post";
 import { author } from "./documents/author";
@@ -17,6 +18,7 @@ const types: SchemaTypeDefinition[] = [
   category,
   program,
   blockContent,
+  seoFields,
   homePage,
   admissionsPage,
   coop,

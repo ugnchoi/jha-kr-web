@@ -1,11 +1,16 @@
+import { cache } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
 import { Button } from "@/components/ui/button";
 import { portableTextComponents, type PortableTextContent } from "@/components/blocks/portable-text";
+import { JsonLd } from "@/components/seo/json-ld";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { admissionsPageQuery } from "@/lib/cms/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 
 interface ChecklistItem {
   title?: string;
@@ -29,23 +34,40 @@ interface AdmissionsPageData {
   timeline?: TimelineItem[];
   contactEmail?: string;
   contactPhone?: string;
+  seo?: SeoFieldset | null;
 }
 
 const DEFAULT_CTA_LINK = "/contact";
 
-export default async function AdmissionsPage() {
-  const data = await sanityFetch<AdmissionsPageData>({
+const getAdmissionsPageData = cache(async () => {
+  return sanityFetch<AdmissionsPageData>({
     query: admissionsPageQuery,
     tags: ["admissionsPage"],
   });
+});
+
+export const generateMetadata = async () => {
+  const data = await getAdmissionsPageData();
+
+  return buildSeoMetadata({
+    seo: data?.seo,
+    defaultTitle: data?.heroTitle ?? "Admissions",
+    defaultDescription: data?.heroSubtitle,
+    canonicalPath: "/admissions",
+    fallbackOgImage: data?.heroImage,
+  });
+};
+
+export default async function AdmissionsPage() {
+  const data = await getAdmissionsPageData();
 
   if (!data) {
     return (
       <section className="flex min-h-[60vh] flex-col items-center justify-center text-center">
         <h1 className="text-4xl font-bold">Admissions Information Coming Soon</h1>
         <p className="mt-4 max-w-2xl text-muted-foreground">
-          Publish the "Admissions Page" document in Sanity Studio to populate this page with hero,
-          overview, checklist, and timeline content.
+          Publish the &ldquo;Admissions Page&rdquo; document in Sanity Studio to populate this page
+          with hero, overview, checklist, and timeline content.
         </p>
       </section>
     );
@@ -59,7 +81,14 @@ export default async function AdmissionsPage() {
     <article className="flex flex-col">
       <section className="relative flex min-h-[420px] items-center justify-center overflow-hidden bg-muted">
         {heroImage && (
-          <img src={heroImage} alt={data.heroTitle} className="absolute inset-0 h-full w-full object-cover" />
+          <Image
+            src={heroImage}
+            alt={data.heroTitle}
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
         )}
         <div className="absolute inset-0 bg-black/60" />
         <div className="container relative z-10 text-center text-white">
@@ -173,6 +202,12 @@ export default async function AdmissionsPage() {
             </div>
           </section>
         )}
+        <JsonLd
+          data={breadcrumbJsonLd([
+            { name: "홈", url: buildCanonicalUrl("/") },
+            { name: data.heroTitle, url: buildCanonicalUrl("/admissions") },
+          ])}
+        />
       </div>
     </article>
   );
