@@ -12,6 +12,13 @@ export const program = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "position",
+      title: "Display Order",
+      description: "Lower numbers appear first in the Programs list.",
+      type: "number",
+      initialValue: 0,
+    }),
+    defineField({
       name: "titleEn",
       title: "Title (English)",
       type: "string",

@@ -11,6 +11,7 @@ export interface ProgramCardProps {
   slug: string;
   description?: string;
   mainImage?: SanityImageSource;
+  position?: number;
 }
 
 export function ProgramCard({ title, titleEn, slug, description, mainImage }: ProgramCardProps) {

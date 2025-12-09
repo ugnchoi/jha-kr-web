@@ -51,12 +51,13 @@ export const homePageQuery = groq`
 
 // Programs
 export const programsQuery = groq`
-  *[_type == "program" && defined(slug.current)] | order(title asc) {
+  *[_type == "program" && defined(slug.current)] | order(position asc, title asc) {
     title,
     titleEn,
     "slug": slug.current,
     description,
-    mainImage
+    mainImage,
+    position
   }
 `;
 
