@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 
   await Promise.all([
     ...tags.map(async (tag) => revalidateTag(tag)),
-    ...paths.map(async (path) => revalidatePath(path, "page")),
+    ...paths.map(async (path) => revalidatePath(path)),
   ]);
 
   return NextResponse.json({
