@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
   }
 
   await Promise.all([
-    ...tags.map(async (tag) => revalidateTag(tag, "page")),
+    ...tags.map(async (tag) => revalidateTag(tag)),
     ...paths.map(async (path) => revalidatePath(path, "page")),
   ]);
 
@@ -77,3 +77,5 @@ export async function POST(request: NextRequest) {
     timestamp: Date.now(),
   });
 }
+
+
