@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import { urlFor, getImageDimensions } from "@/sanity/lib/image";
+import { urlFor } from "@/sanity/lib/image";
 
 export type PortableTextContent = PortableTextBlock[] | PortableTextBlock | null | undefined;
 
@@ -20,9 +20,8 @@ export const portableTextComponents: PortableTextComponents = {
         return null;
       }
 
-      const { width, height } = getImageDimensions(value);
       const imageUrl = urlFor(value)
-        .width(Math.min(width || 1600, 1600)) // Cap width at 1600
+        .width(1600)
         .fit("max")
         .auto("format")
         .url();
@@ -43,12 +42,9 @@ export const portableTextComponents: PortableTextComponents = {
           <Image
             src={imageUrl}
             alt={alt}
-            width={width || 1600}
-            height={height || 900}
-            className="h-auto w-full"
-            style={{
-              aspectRatio: width && height ? `${width} / ${height}` : "auto",
-            }}
+            width={1600}
+            height={900}
+            className="h-auto w-full object-cover"
           />
           {value.alt && (
             <figcaption className="bg-background/80 px-4 py-2 text-center text-sm text-muted-foreground">
@@ -98,3 +94,4 @@ export const portableTextComponents: PortableTextComponents = {
     ),
   },
 };
+
