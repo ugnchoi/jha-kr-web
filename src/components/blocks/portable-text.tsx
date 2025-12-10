@@ -13,6 +13,39 @@ const generateImageAlt = (value?: { alt?: string | null }) => {
   return "Program content image";
 };
 
+// Default aspect ratio (16:9) for content images
+const DEFAULT_ASPECT_RATIO = 16 / 9;
+const DEFAULT_WIDTH = 1600;
+const DEFAULT_HEIGHT = Math.round(DEFAULT_WIDTH / DEFAULT_ASPECT_RATIO);
+
+const calculateAspectRatio = (
+  value?: {
+    asset?: {
+      _ref?: string;
+      metadata?: {
+        dimensions?: {
+          width?: number;
+          height?: number;
+        };
+      };
+    };
+  }
+): { width: number; height: number } => {
+  // Try to get dimensions from asset metadata
+  const dimensions = value?.asset?.metadata?.dimensions;
+  
+  if (dimensions?.width && dimensions?.height && dimensions.width > 0 && dimensions.height > 0) {
+    // Calculate aspect ratio from actual dimensions
+    const aspectRatio = dimensions.width / dimensions.height;
+    // Use default width, calculate height based on actual aspect ratio
+    const height = Math.round(DEFAULT_WIDTH / aspectRatio);
+    return { width: DEFAULT_WIDTH, height };
+  }
+
+  // Fall back to default 16:9 aspect ratio
+  return { width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT };
+};
+
 export const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
@@ -20,9 +53,14 @@ export const portableTextComponents: PortableTextComponents = {
         return null;
       }
 
+      const { width, height } = calculateAspectRatio(value);
+
+      // Use fit("crop") to leverage hotspot for proper cropping
+      // Hotspot is automatically respected when using crop mode
       const imageUrl = urlFor(value)
-        .width(1600)
-        .fit("max")
+        .width(width)
+        .height(height)
+        .fit("crop")
         .auto("format")
         .url();
 
@@ -42,8 +80,8 @@ export const portableTextComponents: PortableTextComponents = {
           <Image
             src={imageUrl}
             alt={alt}
-            width={1600}
-            height={900}
+            width={width}
+            height={height}
             className="h-auto w-full object-cover"
           />
           {value.alt && (
