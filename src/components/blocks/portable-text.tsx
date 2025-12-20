@@ -19,6 +19,31 @@ const DEFAULT_ASPECT_RATIO = 16 / 9;
 const DEFAULT_WIDTH = 1600;
 const DEFAULT_HEIGHT = Math.round(DEFAULT_WIDTH / DEFAULT_ASPECT_RATIO);
 
+const parseAssetDimensionsFromRef = (
+  ref?: string
+): { width: number; height: number; aspectRatio: number } | null => {
+  if (!ref) {
+    return null;
+  }
+
+  // Sanity image asset refs contain the original dimensions, e.g.
+  // "image-<hash>-2236x1078-png"
+  const match = ref.match(/-(\d+)x(\d+)-/);
+
+  if (!match) {
+    return null;
+  }
+
+  const width = Number(match[1]);
+  const height = Number(match[2]);
+
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+    return null;
+  }
+
+  return { width, height, aspectRatio: width / height };
+};
+
 /**
  * Calculate aspect ratio for image rendering.
  * 
@@ -54,6 +79,14 @@ const calculateAspectRatio = (
     const aspectRatio = dimensions.aspectRatio ?? dimensions.width / dimensions.height;
     // Use default width, calculate height based on actual aspect ratio
     const height = Math.round(DEFAULT_WIDTH / aspectRatio);
+    return { width: DEFAULT_WIDTH, height };
+  }
+
+  // If metadata isn't present, parse intrinsic dimensions from the Sanity asset ref.
+  // This avoids forcing a 16:9 fallback in cases where we didn't expand asset metadata.
+  const refDimensions = parseAssetDimensionsFromRef(value?.asset?._ref);
+  if (refDimensions) {
+    const height = Math.round(DEFAULT_WIDTH / refDimensions.aspectRatio);
     return { width: DEFAULT_WIDTH, height };
   }
 
