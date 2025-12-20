@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, Youtube } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -76,6 +76,16 @@ export function Header() {
         {/* Right Side Actions */}
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="flex items-center">
+            <Button asChild variant="ghost" size="icon">
+              <a
+                href="https://www.youtube.com/channel/UCStDxg4zE0jM5Gog4iEF-HQ"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="유튜브 채널 열기"
+              >
+                <Youtube className="h-5 w-5" />
+              </a>
+            </Button>
             <Button asChild variant="default" size="sm">
               <Link href="/admissions">입학 지원하기</Link>
             </Button>
