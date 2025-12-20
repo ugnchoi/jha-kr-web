@@ -37,7 +37,7 @@ export function CoopCard({
           </div>
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
-            No Image
+            이미지 없음
           </div>
         )}
       </Link>

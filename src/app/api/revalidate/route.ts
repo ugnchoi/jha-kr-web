@@ -33,7 +33,7 @@ const collectValues = (single?: string, multiple?: string[]) => {
 export async function POST(request: NextRequest) {
   if (!secret) {
     return NextResponse.json(
-      { error: "Revalidation secret not configured" },
+      { error: "재검증 시크릿이 설정되지 않았습니다." },
       { status: 500 }
     );
   }
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
   const providedSecret = getProvidedSecret(request);
 
   if (providedSecret !== secret) {
-    return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
+    return NextResponse.json({ error: "올바르지 않은 시크릿입니다." }, { status: 401 });
   }
 
   let payload: RevalidatePayload = {};
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     }
   } catch {
     return NextResponse.json(
-      { error: "Invalid JSON payload" },
+      { error: "잘못된 JSON 페이로드입니다." },
       { status: 400 }
     );
   }
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
   if (!tags.length && !paths.length) {
     return NextResponse.json(
-      { error: "Provide at least one tag or path." },
+      { error: "최소한 하나의 태그 또는 경로를 제공해 주세요." },
       { status: 400 }
     );
   }
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   if (!secret) {
     return NextResponse.json(
-      { error: "Revalidation secret not configured" },
+      { error: "재검증 시크릿이 설정되지 않았습니다." },
       { status: 500 }
     );
   }
@@ -91,12 +91,12 @@ export async function GET(request: NextRequest) {
   const providedSecret = getProvidedSecret(request);
 
   if (providedSecret !== secret) {
-    return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
+    return NextResponse.json({ error: "올바르지 않은 시크릿입니다." }, { status: 401 });
   }
 
   return NextResponse.json({
     ok: true,
-    message: "Revalidate endpoint ready. Use POST to trigger.",
+    message: "재검증 엔드포인트가 준비되었습니다. POST로 호출해 주세요.",
     timestamp: Date.now(),
   });
 }

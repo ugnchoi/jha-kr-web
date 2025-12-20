@@ -7,7 +7,7 @@ const defaultSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jha.kr";
 export const siteMetadata = {
   siteName: "JHA (Korea)",
   baseUrl: defaultSiteUrl,
-  description: "SEO-first, CMS-driven website for Jubilee Homeschool Academy in Korea.",
+  description: "조슈아 홈스쿨 아카데미(JHA)를 위한 SEO 기반 CMS 웹사이트입니다.",
   locale: "ko-KR",
   twitterHandle: "@jhakorea",
 };
@@ -39,7 +39,7 @@ export const buildDefaultMetadata = (): Metadata => ({
     "코업",
     "JHA",
     "Jubilee Homeschool Academy",
-    "Christian Education",
+    "기독교 교육",
     "입학 안내",
   ],
   openGraph: {

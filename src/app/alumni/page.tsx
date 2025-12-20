@@ -41,7 +41,7 @@ export const generateMetadata = async () => {
 
   return buildSeoMetadata({
     seo: data?.seo,
-    defaultTitle: data?.heroTitle ?? "Alumni",
+    defaultTitle: data?.heroTitle ?? "동문",
     defaultDescription: data?.heroSubtitle,
     canonicalPath: "/alumni",
     fallbackOgImage: data?.heroImage,
@@ -54,9 +54,9 @@ export default async function AlumniPage() {
   if (!data) {
     return (
       <div className="container py-20 text-center">
-        <h1 className="text-4xl font-bold">Alumni Network</h1>
+        <h1 className="text-4xl font-bold">동문 네트워크</h1>
         <p className="mt-4 text-muted-foreground">
-          Publish the “Alumni Page” document in Sanity Studio to populate this route.
+          Sanity Studio에서 “Alumni Page” 문서를 게시해 주세요.
         </p>
       </div>
     );
@@ -97,9 +97,7 @@ export default async function AlumniPage() {
 
         {data.highlights?.length ? (
           <section>
-            <h2 className="mb-8 text-3xl font-semibold text-center">
-              Stories From the JHA Family
-            </h2>
+            <h2 className="mb-8 text-3xl font-semibold text-center">JHA 가족 이야기</h2>
             <div className="grid gap-6 md:grid-cols-2">
               {data.highlights.map((story, index) => (
                 <div

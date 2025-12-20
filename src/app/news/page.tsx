@@ -12,10 +12,10 @@ export default async function NewsPage() {
     <div className="container py-16">
       <div className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold tracking-tight lg:text-5xl">
-          News & Updates
+          소식 및 공지
         </h1>
         <p className="text-muted-foreground lg:text-lg">
-          Latest announcements, events, and stories from our community.
+          커뮤니티의 최신 공지, 이벤트, 이야기들을 확인하세요.
         </p>
       </div>
 
@@ -33,7 +33,7 @@ export default async function NewsPage() {
           ))
         ) : (
           <div className="col-span-full py-20 text-center text-muted-foreground">
-            No news posts found.
+            아직 등록된 소식이 없습니다.
           </div>
         )}
       </div>

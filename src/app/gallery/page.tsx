@@ -44,7 +44,7 @@ export const generateMetadata = async () => {
 
   return buildSeoMetadata({
     seo: data?.seo,
-    defaultTitle: data?.heroTitle ?? "Gallery",
+    defaultTitle: data?.heroTitle ?? "갤러리",
     defaultDescription: data?.heroSubtitle,
     canonicalPath: "/gallery",
     fallbackOgImage: data?.heroImage,
@@ -57,9 +57,9 @@ export default async function GalleryPage() {
   if (!data) {
     return (
       <div className="container py-20 text-center">
-        <h1 className="text-4xl font-bold">Gallery</h1>
+        <h1 className="text-4xl font-bold">갤러리</h1>
         <p className="mt-4 text-muted-foreground">
-          Publish the “Gallery Page” document in Sanity Studio to populate this route.
+          Sanity Studio에서 “Gallery Page” 문서를 게시해 주세요.
         </p>
       </div>
     );
@@ -138,7 +138,7 @@ export default async function GalleryPage() {
           </section>
         ) : (
           <p className="text-center text-muted-foreground">
-            No gallery entries yet. Upload photos in Sanity to curate this space.
+            아직 등록된 사진이 없습니다. Sanity에 사진을 업로드해 주세요.
           </p>
         )}
         <JsonLd

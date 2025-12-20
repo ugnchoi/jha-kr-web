@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import type { SanityImageSource } from "@sanity/image-url";
 import { urlFor } from "@/sanity/lib/image";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
@@ -33,7 +34,7 @@ export function PostCard({ title, slug, publishedAt, mainImage, categories }: Po
           </div>
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
-            No Image
+            이미지 없음
           </div>
         )}
       </Link>
@@ -53,7 +54,7 @@ export function PostCard({ title, slug, publishedAt, mainImage, categories }: Po
       </CardHeader>
       <CardFooter className="mt-auto p-4 pt-0 text-sm text-muted-foreground">
         <time dateTime={publishedAt}>
-          {format(new Date(publishedAt), "MMMM d, yyyy")}
+          {format(new Date(publishedAt), "yyyy년 M월 d일", { locale: ko })}
         </time>
       </CardFooter>
     </Card>
