@@ -14,35 +14,50 @@ const generateImageAlt = (value?: { alt?: string | null }) => {
 };
 
 // Default aspect ratio (16:9) for content images
+// This matches the hotspot previews defined in the schema
 const DEFAULT_ASPECT_RATIO = 16 / 9;
 const DEFAULT_WIDTH = 1600;
 const DEFAULT_HEIGHT = Math.round(DEFAULT_WIDTH / DEFAULT_ASPECT_RATIO);
 
+/**
+ * Calculate aspect ratio for image rendering.
+ * 
+ * Note: Asset metadata dimensions are stored in the asset document (not the image field),
+ * so they would need to be queried separately via GROQ asset expansion.
+ * For now, we use a sensible default that matches our hotspot previews.
+ * 
+ * The hotspot data (x, y, width, height) is stored on the image field itself
+ * and is automatically respected by Sanity's image-url builder when using fit("crop").
+ * 
+ * @see https://www.sanity.io/docs/studio/image-type#ec0774235d77
+ */
 const calculateAspectRatio = (
   value?: {
     asset?: {
       _ref?: string;
+      // Asset metadata would be available if queried with asset-> expansion in GROQ
       metadata?: {
         dimensions?: {
           width?: number;
           height?: number;
+          aspectRatio?: number;
         };
       };
     };
   }
 ): { width: number; height: number } => {
-  // Try to get dimensions from asset metadata
+  // Try to get dimensions from asset metadata (if available from GROQ query)
   const dimensions = value?.asset?.metadata?.dimensions;
   
   if (dimensions?.width && dimensions?.height && dimensions.width > 0 && dimensions.height > 0) {
-    // Calculate aspect ratio from actual dimensions
-    const aspectRatio = dimensions.width / dimensions.height;
+    // Use the aspectRatio from metadata if available, otherwise calculate it
+    const aspectRatio = dimensions.aspectRatio ?? dimensions.width / dimensions.height;
     // Use default width, calculate height based on actual aspect ratio
     const height = Math.round(DEFAULT_WIDTH / aspectRatio);
     return { width: DEFAULT_WIDTH, height };
   }
 
-  // Fall back to default 16:9 aspect ratio
+  // Fall back to default 16:9 aspect ratio (matches hotspot preview)
   return { width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT };
 };
 
@@ -56,7 +71,11 @@ export const portableTextComponents: PortableTextComponents = {
       const { width, height } = calculateAspectRatio(value);
 
       // Use fit("crop") to leverage hotspot for proper cropping
-      // Hotspot is automatically respected when using crop mode
+      // When fit("crop") is used, Sanity automatically respects:
+      // - The hotspot focal point (x, y) to center the crop
+      // - The crop boundaries (top, bottom, left, right) if set
+      // The hotspot data is stored on the image field itself
+      // @see https://www.sanity.io/docs/studio/image-type#ec0774235d77
       const imageUrl = urlFor(value)
         .width(width)
         .height(height)
