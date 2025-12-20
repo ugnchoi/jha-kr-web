@@ -32,7 +32,7 @@ export const homePage = defineType({
       name: "heroCtaLabel",
       title: "CTA Button Label",
       type: "string",
-      initialValue: "Learn More",
+      initialValue: "더 알아보기",
     }),
     defineField({
       name: "heroCtaLink",
