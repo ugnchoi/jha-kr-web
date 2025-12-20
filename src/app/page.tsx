@@ -6,11 +6,15 @@ import { JsonLd } from "@/components/seo/json-ld";
 import type { SanityImageSource } from "@sanity/image-url";
 import { organizationJsonLd } from "@/lib/seo/jsonld";
 import { buildSeoMetadata, type SeoFieldset } from "@/lib/seo/meta";
+import Link from "next/link";
+import { PostCard } from "@/components/blocks/post/post-card";
 
 type FeaturedNewsItem = {
-  _id?: string;
   title: string;
-  slug?: string | null;
+  slug?: string;
+  publishedAt?: string;
+  mainImage?: SanityImageSource;
+  categories?: string[];
 };
 
 type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
@@ -59,6 +63,12 @@ export default async function Home() {
     );
   }
 
+  const featuredNews = (data.featuredNews ?? []).filter(
+    (item): item is Required<Pick<FeaturedNewsItem, "title" | "slug" | "publishedAt">> &
+      Omit<FeaturedNewsItem, "title" | "slug" | "publishedAt"> =>
+      Boolean(item?.title) && Boolean(item?.slug) && Boolean(item?.publishedAt)
+  );
+
   return (
     <div className="flex flex-col">
       <Hero
@@ -68,23 +78,35 @@ export default async function Home() {
         ctaLabel={data.heroCtaLabel}
         ctaLink={data.heroCtaLink}
       />
-      
-      {/* Featured News Section Placeholder */}
+
       <section className="container py-16">
-        <h2 className="mb-8 text-3xl font-bold tracking-tight">최신 소식</h2>
+        <div className="mb-8 flex items-end justify-between gap-4">
+          <h2 className="text-3xl font-bold tracking-tight">최신 소식</h2>
+          <Link
+            href="/news"
+            className="rounded-sm text-sm font-medium text-foreground/70 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            전체 보기
+          </Link>
+        </div>
+
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-           {data.featuredNews?.length ? (
-            data.featuredNews.map((news, index) => (
-              <div
-                key={news.slug ?? news._id ?? `featured-news-${index}`}
-                className="rounded-lg border p-4"
-              >
-                 <h3 className="font-bold">{news.title}</h3>
-               </div>
-             ))
-           ) : (
-             <p className="text-muted-foreground">아직 등록된 소식이 없습니다.</p>
-           )}
+          {featuredNews.length > 0 ? (
+            featuredNews.map((news) => (
+              <PostCard
+                key={news.slug}
+                title={news.title}
+                slug={news.slug}
+                publishedAt={news.publishedAt}
+                mainImage={news.mainImage}
+                categories={news.categories}
+              />
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center text-muted-foreground">
+              아직 등록된 소식이 없습니다.
+            </div>
+          )}
         </div>
       </section>
       <JsonLd data={organizationJsonLd()} />

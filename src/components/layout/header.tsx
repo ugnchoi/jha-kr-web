@@ -19,16 +19,16 @@ export function Header() {
       <div className="container flex h-14 items-center">
         {/* Desktop Nav */}
         <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+          <Link href="/" aria-label="홈" className="mr-6 flex items-center space-x-2">
             <span className="hidden font-bold sm:inline-block">JHA (Korea)</span>
           </Link>
-          <nav className="flex items-center gap-6 text-sm font-medium">
+          <nav aria-label="주요 내비게이션" className="flex items-center gap-6 text-sm font-medium">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "transition-colors hover:text-foreground/80 text-foreground/60"
+                  "rounded-sm text-foreground/60 transition-colors hover:text-foreground/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 )}
               >
                 {item.label}
@@ -68,7 +68,7 @@ export function Header() {
               </nav>
             </SheetContent>
           </Sheet>
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" aria-label="홈" className="flex items-center space-x-2">
             <span className="font-bold">JHA</span>
           </Link>
         </div>
