@@ -3,6 +3,10 @@ import { revalidatePath, revalidateTag } from "next/cache";
 
 const secret = process.env.SANITY_REVALIDATE_SECRET;
 
+const getProvidedSecret = (request: NextRequest) =>
+  request.nextUrl.searchParams.get("secret") ??
+  request.headers.get("x-revalidate-secret");
+
 type RevalidatePayload = {
   tag?: string;
   tags?: string[];
@@ -34,9 +38,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const providedSecret =
-    request.nextUrl.searchParams.get("secret") ??
-    request.headers.get("x-revalidate-secret");
+  const providedSecret = getProvidedSecret(request);
 
   if (providedSecret !== secret) {
     return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
@@ -66,7 +68,7 @@ export async function POST(request: NextRequest) {
   }
 
   await Promise.all([
-    ...tags.map(async (tag) => revalidateTag(tag)),
+    ...tags.map(async (tag) => revalidateTag(tag, { expire: 0 })),
     ...paths.map(async (path) => revalidatePath(path)),
   ]);
 
@@ -75,6 +77,36 @@ export async function POST(request: NextRequest) {
     tags,
     paths,
     timestamp: Date.now(),
+  });
+}
+
+export async function GET(request: NextRequest) {
+  if (!secret) {
+    return NextResponse.json(
+      { error: "Revalidation secret not configured" },
+      { status: 500 }
+    );
+  }
+
+  const providedSecret = getProvidedSecret(request);
+
+  if (providedSecret !== secret) {
+    return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
+  }
+
+  return NextResponse.json({
+    ok: true,
+    message: "Revalidate endpoint ready. Use POST to trigger.",
+    timestamp: Date.now(),
+  });
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      Allow: "POST, GET, OPTIONS",
+    },
   });
 }
 
