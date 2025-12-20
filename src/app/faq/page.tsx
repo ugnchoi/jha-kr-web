@@ -16,10 +16,12 @@ interface FaqItem {
   answer?: PortableTextContent;
 }
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface FaqPageData {
   heroTitle: string;
   heroSubtitle?: string;
-  heroImage?: SanityImageSource;
+  heroImage?: SanityImageWithAlt;
   body?: PortableTextContent;
   faqItems?: FaqItem[];
   seo?: SeoFieldset | null;
@@ -66,8 +68,8 @@ export default async function FaqPage() {
       <section className="relative flex min-h-[280px] items-center justify-center overflow-hidden bg-muted">
         {data.heroImage && (
           <Image
-            src={urlFor(data.heroImage).width(1920).height(800).url()}
-            alt={data.heroTitle}
+            src={urlFor(data.heroImage).width(1920).height(800).fit("crop").url()}
+            alt={data.heroImage.alt ?? data.heroTitle}
             fill
             sizes="100vw"
             className="object-cover"

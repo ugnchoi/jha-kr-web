@@ -23,10 +23,12 @@ interface TimelineItem {
   description?: string;
 }
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface AdmissionsPageData {
   heroTitle: string;
   heroSubtitle?: string;
-  heroImage?: SanityImageSource;
+  heroImage?: SanityImageWithAlt;
   ctaLabel?: string;
   ctaLink?: string;
   overview?: PortableTextContent;
@@ -73,7 +75,10 @@ export default async function AdmissionsPage() {
     );
   }
 
-  const heroImage = data.heroImage ? urlFor(data.heroImage).width(1920).height(960).url() : null;
+  const heroImage = data.heroImage
+    ? urlFor(data.heroImage).width(1920).height(960).fit("crop").url()
+    : null;
+  const heroAlt = data.heroImage?.alt ?? data.heroTitle;
   const ctaLabel = data.ctaLabel ?? "입학 지원 시작하기";
   const ctaHref = data.ctaLink ?? DEFAULT_CTA_LINK;
 
@@ -83,7 +88,7 @@ export default async function AdmissionsPage() {
         {heroImage && (
           <Image
             src={heroImage}
-            alt={data.heroTitle}
+            alt={heroAlt}
             fill
             sizes="100vw"
             className="object-cover"

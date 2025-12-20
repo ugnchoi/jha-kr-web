@@ -14,11 +14,13 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { courseJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface Program {
   title: string;
   titleEn?: string;
   description?: string;
-  mainImage?: SanityImageSource;
+  mainImage?: SanityImageWithAlt;
   content: PortableTextContent;
   slug?: string;
   seo?: SeoFieldset | null;
@@ -81,8 +83,8 @@ export default async function ProgramPage({ params }: Props) {
           <div className="absolute inset-0 z-10 bg-black/50" />
           {program.mainImage && (
             <Image
-              src={urlFor(program.mainImage).width(1920).height(1080).url()}
-              alt={program.title}
+              src={urlFor(program.mainImage).width(1920).height(1080).fit("crop").url()}
+              alt={program.mainImage.alt ?? program.title}
               fill
               sizes="100vw"
               className="object-cover"

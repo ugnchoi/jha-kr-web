@@ -4,17 +4,20 @@ import { urlFor } from "@/sanity/lib/image";
 import { Button } from "@/components/ui/button";
 import type { SanityImageSource } from "@sanity/image-url";
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface HeroProps {
   title: string;
   subtitle?: string;
-  image: SanityImageSource;
+  image: SanityImageWithAlt;
   ctaLabel?: string;
   ctaLink?: string;
 }
 
 export function Hero({ title, subtitle, image, ctaLabel, ctaLink }: HeroProps) {
+  const heroAlt = image?.alt ?? title;
   const heroImageUrl = image
-    ? urlFor(image).width(1920).height(1080).quality(80).url()
+    ? urlFor(image).width(1920).height(1080).fit("crop").quality(80).url()
     : null;
 
   return (
@@ -25,7 +28,7 @@ export function Hero({ title, subtitle, image, ctaLabel, ctaLink }: HeroProps) {
         {heroImageUrl && (
           <Image
             src={heroImageUrl}
-            alt={title}
+            alt={heroAlt}
             fill
             sizes="100vw"
             priority

@@ -15,10 +15,12 @@ interface Highlight {
   description?: string;
 }
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface AlumniPageData {
   heroTitle: string;
   heroSubtitle?: string;
-  heroImage?: SanityImageSource;
+  heroImage?: SanityImageWithAlt;
   body?: PortableTextContent;
   highlights?: Highlight[];
   seo?: SeoFieldset | null;
@@ -65,8 +67,8 @@ export default async function AlumniPage() {
       <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-muted">
         {data.heroImage && (
           <Image
-            src={urlFor(data.heroImage).width(1920).height(900).url()}
-            alt={data.heroTitle}
+            src={urlFor(data.heroImage).width(1920).height(900).fit("crop").url()}
+            alt={data.heroImage.alt ?? data.heroTitle}
             fill
             sizes="100vw"
             className="object-cover"

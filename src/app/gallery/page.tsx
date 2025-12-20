@@ -18,10 +18,12 @@ type GalleryImage =
       alt?: string;
     });
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface GalleryPageData {
   heroTitle: string;
   heroSubtitle?: string;
-  heroImage?: SanityImageSource;
+  heroImage?: SanityImageWithAlt;
   body?: PortableTextContent;
   gallery?: GalleryImage[];
   seo?: SeoFieldset | null;
@@ -68,8 +70,8 @@ export default async function GalleryPage() {
       <section className="relative flex min-h-[320px] items-center justify-center overflow-hidden bg-muted">
         {data.heroImage && (
           <Image
-            src={urlFor(data.heroImage).width(1920).height(800).url()}
-            alt={data.heroTitle}
+            src={urlFor(data.heroImage).width(1920).height(800).fit("crop").url()}
+            alt={data.heroImage.alt ?? data.heroTitle}
             fill
             sizes="100vw"
             className="object-cover"

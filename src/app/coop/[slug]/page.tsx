@@ -13,12 +13,14 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { buildSeoMetadata, type SeoFieldset, buildCanonicalUrl } from "@/lib/seo/meta";
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface CoopData {
   title: string;
   slug?: string;
   day?: string;
   description?: string;
-  heroImage?: SanityImageSource;
+  heroImage?: SanityImageWithAlt;
   announcements?: {
     title: string;
     slug?: string;
@@ -88,8 +90,8 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
       <div className="relative flex min-h-[400px] w-full items-center justify-center overflow-hidden bg-muted">
         {data.heroImage && (
           <Image
-            src={urlFor(data.heroImage).width(1920).height(800).url()}
-            alt={data.title}
+            src={urlFor(data.heroImage).width(1920).height(800).fit("crop").url()}
+            alt={data.heroImage.alt ?? data.title}
             fill
             sizes="100vw"
             className="object-cover"
