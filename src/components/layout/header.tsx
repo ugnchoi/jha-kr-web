@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Menu, Youtube } from "lucide-react";
+import Image from "next/image";
+import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -75,7 +76,7 @@ export function Header() {
 
         {/* Right Side Actions */}
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <nav className="flex items-center">
+          <nav aria-label="빠른 링크" className="flex items-center gap-2">
             <Button asChild variant="ghost" size="icon">
               <a
                 href="https://www.youtube.com/channel/UCStDxg4zE0jM5Gog4iEF-HQ"
@@ -83,7 +84,14 @@ export function Header() {
                 rel="noopener noreferrer"
                 aria-label="유튜브 채널 열기"
               >
-                <Youtube className="h-5 w-5" />
+                <Image
+                  src="/yt_icon_almostblack_digital.png"
+                  alt=""
+                  width={20}
+                  height={20}
+                  aria-hidden="true"
+                  className="h-5 w-5 object-contain dark:invert"
+                />
               </a>
             </Button>
             <Button asChild variant="default" size="sm">
