@@ -13,10 +13,12 @@ type FeaturedNewsItem = {
   slug?: string | null;
 };
 
+type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
+
 interface HomePageData {
   heroTitle: string;
   heroSubtitle?: string;
-  heroImage: SanityImageSource;
+  heroImage: SanityImageWithAlt;
   heroCtaLabel?: string;
   heroCtaLink?: string;
   featuredNews?: FeaturedNewsItem[];

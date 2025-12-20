@@ -61,14 +61,23 @@ export const blockContent = defineType({
     // as a block type.
     defineArrayMember({
       type: "image",
-      options: { hotspot: true },
+      options: {
+        hotspot: {
+          previews: [
+            { title: "16:9 (Wide)", aspectRatio: 16 / 9 },
+            { title: "4:3 (Standard)", aspectRatio: 4 / 3 },
+            { title: "1:1 (Square)", aspectRatio: 1 / 1 },
+            { title: "3:4 (Portrait)", aspectRatio: 3 / 4 },
+          ],
+        },
+      },
       fields: [
         {
           name: "alt",
           type: "string",
           title: "Alternative Text",
-        }
-      ]
+        },
+      ],
     }),
   ],
 });
