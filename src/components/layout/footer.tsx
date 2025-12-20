@@ -10,7 +10,7 @@ export function Footer() {
               <span className="font-bold">JHA (Korea)</span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              Empowering families through Christ-centered education and community.
+              그리스도 중심 교육과 공동체로 가정을 세워갑니다.
             </p>
           </div>
           <div>
@@ -76,7 +76,7 @@ export function Footer() {
         </div>
         <div className="mt-10 border-t pt-6 flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-center text-xs text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} JHA (Korea). All rights reserved.
+            &copy; {new Date().getFullYear()} JHA (Korea). 모든 권리를 보유하고 있습니다.
           </p>
           <div className="flex gap-4 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground">

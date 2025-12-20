@@ -42,7 +42,7 @@ export const generateMetadata = async () => {
 
   return buildSeoMetadata({
     seo: data?.seo,
-    defaultTitle: data?.heroTitle ?? "FAQ",
+    defaultTitle: data?.heroTitle ?? "자주 묻는 질문",
     defaultDescription: data?.heroSubtitle,
     canonicalPath: "/faq",
     fallbackOgImage: data?.heroImage,
@@ -55,9 +55,9 @@ export default async function FaqPage() {
   if (!data) {
     return (
       <div className="container py-20 text-center">
-        <h1 className="text-4xl font-bold">Frequently Asked Questions</h1>
+        <h1 className="text-4xl font-bold">자주 묻는 질문</h1>
         <p className="mt-4 text-muted-foreground">
-          Publish the “FAQ Page” document in Sanity Studio to populate this route.
+          Sanity Studio에서 “FAQ Page” 문서를 게시해 주세요.
         </p>
       </div>
     );
@@ -116,7 +116,7 @@ export default async function FaqPage() {
           </section>
         ) : (
           <p className="text-center text-muted-foreground">
-            No FAQs yet. Add entries in Sanity to answer common questions.
+            아직 등록된 FAQ가 없습니다. 자주 묻는 질문을 Sanity에 추가해 주세요.
           </p>
         )}
         <JsonLd

@@ -51,9 +51,9 @@ export default async function Home() {
   if (!data) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
-        <h1 className="text-4xl font-bold">Welcome to JHA (Korea)</h1>
+        <h1 className="text-4xl font-bold">JHA (Korea)에 오신 것을 환영합니다</h1>
         <p className="mt-4 text-muted-foreground">
-          Please publish the &ldquo;Home Page&rdquo; document in Sanity Studio.
+          Sanity Studio에서 &ldquo;Home Page&rdquo; 문서를 게시해 주세요.
         </p>
       </div>
     );
@@ -71,7 +71,7 @@ export default async function Home() {
       
       {/* Featured News Section Placeholder */}
       <section className="container py-16">
-        <h2 className="mb-8 text-3xl font-bold tracking-tight">Latest News</h2>
+        <h2 className="mb-8 text-3xl font-bold tracking-tight">최신 소식</h2>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
            {data.featuredNews?.length ? (
             data.featuredNews.map((news, index) => (
@@ -83,7 +83,7 @@ export default async function Home() {
                </div>
              ))
            ) : (
-             <p className="text-muted-foreground">No news yet.</p>
+             <p className="text-muted-foreground">아직 등록된 소식이 없습니다.</p>
            )}
         </div>
       </section>

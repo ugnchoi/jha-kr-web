@@ -124,12 +124,12 @@ export default async function ProgramPage({ params }: Props) {
           {/* Sidebar */}
           <aside className="space-y-8">
             <div className="rounded-lg border bg-muted/50 p-6">
-              <h3 className="mb-4 text-lg font-semibold">Interested?</h3>
+              <h3 className="mb-4 text-lg font-semibold">관심이 있으신가요?</h3>
               <p className="mb-6 text-sm text-muted-foreground">
-                Learn more about our admissions process and how to join the JHA community.
+                입학 절차와 JHA 공동체에 합류하는 방법을 확인해 보세요.
               </p>
               <Button asChild className="w-full">
-                <Link href="/admissions">Admissions Info</Link>
+                <Link href="/admissions">입학 안내 보기</Link>
               </Button>
             </div>
             

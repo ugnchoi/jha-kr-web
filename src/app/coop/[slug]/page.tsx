@@ -122,7 +122,7 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
       <div className="container py-16">
         <div className="grid gap-12 lg:grid-cols-[2fr_1fr]">
           <section>
-            <h2 className="mb-6 text-3xl font-semibold">Activities</h2>
+            <h2 className="mb-6 text-3xl font-semibold">활동</h2>
             {data.activities?.length ? (
               <div className="grid gap-6 md:grid-cols-2">
                 {data.activities.map((activity) => (
@@ -138,14 +138,14 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
               </div>
             ) : (
               <p className="text-muted-foreground">
-                No featured activities yet. Add them in Sanity.
+                아직 소개할 활동이 없습니다. Sanity에서 추가해 주세요.
               </p>
             )}
           </section>
 
           <aside className="space-y-8">
             <section className="rounded-lg border p-6">
-              <h3 className="mb-4 text-xl font-semibold">Announcements</h3>
+              <h3 className="mb-4 text-xl font-semibold">공지사항</h3>
               {data.announcements?.length ? (
                 <ul className="space-y-4 text-sm">
                   {data.announcements.map((announcement) => (
@@ -158,7 +158,7 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
                       </Link>
                       {announcement.publishedAt && (
                         <p className="text-muted-foreground">
-                          {new Date(announcement.publishedAt).toLocaleDateString()}
+                          {new Date(announcement.publishedAt).toLocaleDateString("ko-KR")}
                         </p>
                       )}
                     </li>
@@ -166,21 +166,20 @@ export default async function CoopDetailPage({ params }: CoopPageProps) {
                 </ul>
               ) : (
                 <p className="text-muted-foreground">
-                  No announcements yet. Reference News posts in Sanity to feature them here.
+                  아직 공지사항이 없습니다. Sanity의 뉴스 게시글을 연결해 주세요.
                 </p>
               )}
             </section>
             <section className="rounded-lg border p-6">
-              <h3 className="mb-4 text-xl font-semibold">Join the Co-op</h3>
+              <h3 className="mb-4 text-xl font-semibold">코업 참여하기</h3>
               <p className="mb-4 text-sm text-muted-foreground">
-                Want to participate? Reach out through our admissions page to find the best
-                pathway for your family.
+                참여를 원하시나요? 입학 안내 페이지에서 문의해 주시면 가정에 맞는 길을 안내해 드립니다.
               </p>
               <Link
                 href="/admissions"
                 className="text-sm font-semibold text-primary hover:underline"
               >
-                Admissions &rarr;
+                입학 안내 &rarr;
               </Link>
             </section>
           </aside>

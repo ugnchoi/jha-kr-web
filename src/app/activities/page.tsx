@@ -12,10 +12,10 @@ export default async function ActivitiesPage() {
     <div className="container py-16">
       <div className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold tracking-tight lg:text-5xl">
-          Activities & Enrichment
+          활동 및 배움
         </h1>
         <p className="mx-auto max-w-2xl text-muted-foreground lg:text-lg">
-          Programs that cultivate creativity, leadership, service, and worship within the JHA community.
+          JHA 공동체 안에서 창의성, 리더십, 섬김, 예배를 기르는 다양한 프로그램을 만나보세요.
         </p>
       </div>
 
@@ -33,7 +33,7 @@ export default async function ActivitiesPage() {
           ))
         ) : (
           <div className="col-span-full py-20 text-center text-muted-foreground">
-            No activities yet. Publish Activity documents in Sanity to see them here.
+            아직 등록된 활동이 없습니다. Sanity에서 Activity 문서를 게시해 주세요.
           </div>
         )}
       </div>

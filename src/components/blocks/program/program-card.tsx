@@ -32,7 +32,7 @@ export function ProgramCard({ title, titleEn, slug, description, mainImage }: Pr
           </div>
         ) : (
           <div className="flex h-full items-center justify-center bg-muted text-muted-foreground">
-            No Image
+            이미지 없음
           </div>
         )}
       </Link>

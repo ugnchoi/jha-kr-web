@@ -10,7 +10,7 @@ const generateImageAlt = (value?: { alt?: string | null }) => {
     return value.alt.trim();
   }
 
-  return "Program content image";
+  return "프로그램 콘텐츠 이미지";
 };
 
 // Default aspect ratio (16:9) for content images

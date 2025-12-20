@@ -2,6 +2,7 @@ import { cache } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import { PortableText } from "@portabletext/react";
 import type { SanityImageSource } from "@sanity/image-url";
 import { Badge } from "@/components/ui/badge";
@@ -106,7 +107,7 @@ export default async function PostPage({ params }: Props) {
             </div>
           )}
           <time dateTime={post.publishedAt}>
-            {format(new Date(post.publishedAt), "MMMM d, yyyy")}
+            {format(new Date(post.publishedAt), "yyyy년 M월 d일", { locale: ko })}
           </time>
         </div>
       </div>
@@ -130,7 +131,7 @@ export default async function PostPage({ params }: Props) {
         </div>
       ) : (
         <p className="mx-auto max-w-2xl text-center text-muted-foreground">
-          This story is coming soon—check back shortly.
+          이 글은 준비 중입니다. 곧 다시 확인해 주세요.
         </p>
       )}
       <JsonLd

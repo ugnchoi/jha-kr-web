@@ -53,7 +53,7 @@ export const generateMetadata = async () => {
 
   return buildSeoMetadata({
     seo: data?.seo,
-    defaultTitle: data?.heroTitle ?? "Admissions",
+    defaultTitle: data?.heroTitle ?? "입학 안내",
     defaultDescription: data?.heroSubtitle,
     canonicalPath: "/admissions",
     fallbackOgImage: data?.heroImage,
@@ -66,10 +66,9 @@ export default async function AdmissionsPage() {
   if (!data) {
     return (
       <section className="flex min-h-[60vh] flex-col items-center justify-center text-center">
-        <h1 className="text-4xl font-bold">Admissions Information Coming Soon</h1>
+        <h1 className="text-4xl font-bold">입학 안내가 곧 제공될 예정입니다</h1>
         <p className="mt-4 max-w-2xl text-muted-foreground">
-          Publish the &ldquo;Admissions Page&rdquo; document in Sanity Studio to populate this page
-          with hero, overview, checklist, and timeline content.
+          Sanity Studio에서 &ldquo;Admissions Page&rdquo; 문서를 게시해 히어로, 개요, 체크리스트, 일정 내용을 채워주세요.
         </p>
       </section>
     );
@@ -97,7 +96,7 @@ export default async function AdmissionsPage() {
         )}
         <div className="absolute inset-0 bg-black/60" />
         <div className="container relative z-10 text-center text-white">
-          <p className="text-sm uppercase tracking-[0.4em] text-white/70">Admissions</p>
+          <p className="text-sm uppercase tracking-[0.4em] text-white/70">입학 안내</p>
           <h1 className="mt-6 text-4xl font-bold tracking-tight lg:text-5xl">{data.heroTitle}</h1>
           {data.heroSubtitle && (
             <p className="mx-auto mt-4 max-w-2xl text-lg text-white/80">{data.heroSubtitle}</p>
@@ -113,7 +112,7 @@ export default async function AdmissionsPage() {
       <div className="container space-y-16 py-16">
         {data.overview && (
           <section className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-6 text-3xl font-semibold tracking-tight">Overview</h2>
+            <h2 className="mb-6 text-3xl font-semibold tracking-tight">개요</h2>
             <div className="prose prose-zinc mx-auto dark:prose-invert">
               <PortableText value={data.overview ?? []} components={portableTextComponents} />
             </div>
@@ -125,9 +124,9 @@ export default async function AdmissionsPage() {
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-                  Checklist
+                  체크리스트
                 </p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight">Prepare your application</h2>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight">지원서를 준비하세요</h2>
               </div>
             </div>
 
@@ -157,9 +156,9 @@ export default async function AdmissionsPage() {
         {data.timeline?.length ? (
           <section>
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Timeline
+              일정
             </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Key dates & milestones</h2>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">주요 일정과 마일스톤</h2>
 
             <div className="mt-10 space-y-8 border-l-2 border-border pl-6">
               {data.timeline.map((milestone, index) => (
@@ -181,11 +180,11 @@ export default async function AdmissionsPage() {
         {(data.contactEmail || data.contactPhone) && (
           <section className="rounded-3xl border bg-muted/30 p-8 text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.4em] text-muted-foreground">
-              Contact Admissions
+              입학 문의
             </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight">We&rsquo;re here to help</h2>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">언제든 도와드릴게요</h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Reach out to our admissions team with any questions about applications, tuition, or campus visits.
+              지원, 등록금, 방문 등 궁금한 점이 있다면 입학팀에 언제든 문의해 주세요.
             </p>
             <div className="mt-8 flex flex-col gap-4 text-lg text-foreground sm:flex-row sm:items-center sm:justify-center">
               {data.contactEmail && (

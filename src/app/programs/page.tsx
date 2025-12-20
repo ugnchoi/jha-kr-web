@@ -12,10 +12,10 @@ export default async function ProgramsPage() {
     <div className="container py-16">
       <div className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold tracking-tight lg:text-5xl">
-          Our Programs
+          프로그램 소개
         </h1>
         <p className="mx-auto max-w-2xl text-muted-foreground lg:text-lg">
-          Discover our holistic educational pathways designed to nurture faith, character, and intellect.
+          신앙과 인격, 지성을 함께 키우는 전인적 교육 과정을 만나보세요.
         </p>
       </div>
 
@@ -33,7 +33,7 @@ export default async function ProgramsPage() {
           ))
         ) : (
           <div className="col-span-full py-20 text-center text-muted-foreground">
-            No programs found.
+            아직 등록된 프로그램이 없습니다.
           </div>
         )}
       </div>
