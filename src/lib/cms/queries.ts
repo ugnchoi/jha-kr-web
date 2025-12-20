@@ -45,6 +45,10 @@ export const homePageQuery = groq`
       mainImage,
       "categories": categories[]->title
     },
+    featuredVideo{
+      title,
+      youtubeUrl
+    },
     seo
   }
 `;

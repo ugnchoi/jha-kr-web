@@ -49,6 +49,52 @@ export const homePage = defineType({
       validation: (rule) => rule.max(3),
     }),
     defineField({
+      name: "featuredVideo",
+      title: "Featured Video",
+      type: "object",
+      description: "A single featured YouTube video shown on the landing page.",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Video Title",
+          type: "string",
+          description: "Displayed as the section title on the landing page.",
+        }),
+        defineField({
+          name: "youtubeUrl",
+          title: "YouTube URL",
+          type: "url",
+          description:
+            "Full YouTube link (e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...).",
+        }),
+      ],
+      validation: (rule) =>
+        rule.custom((value) => {
+          if (!value) {
+            return true;
+          }
+
+          const maybeValue = value as { title?: unknown; youtubeUrl?: unknown };
+          const title = typeof maybeValue.title === "string" ? maybeValue.title.trim() : "";
+          const youtubeUrl =
+            typeof maybeValue.youtubeUrl === "string" ? maybeValue.youtubeUrl.trim() : "";
+
+          if (!title && !youtubeUrl) {
+            return true;
+          }
+
+          if (!title) {
+            return "Video Title is required when Featured Video is set.";
+          }
+
+          if (!youtubeUrl) {
+            return "YouTube URL is required when Featured Video is set.";
+          }
+
+          return true;
+        }),
+    }),
+    defineField({
       name: "seo",
       title: "SEO",
       type: "seo",

@@ -8,6 +8,7 @@ import { organizationJsonLd } from "@/lib/seo/jsonld";
 import { buildSeoMetadata, type SeoFieldset } from "@/lib/seo/meta";
 import Link from "next/link";
 import { PostCard } from "@/components/blocks/post/post-card";
+import { FeaturedVideo } from "@/components/blocks/featured-video";
 
 type FeaturedNewsItem = {
   title: string;
@@ -19,6 +20,11 @@ type FeaturedNewsItem = {
 
 type SanityImageWithAlt = SanityImageSource & { alt?: string | null };
 
+type FeaturedVideoItem = {
+  title?: string;
+  youtubeUrl?: string;
+};
+
 interface HomePageData {
   heroTitle: string;
   heroSubtitle?: string;
@@ -26,6 +32,7 @@ interface HomePageData {
   heroCtaLabel?: string;
   heroCtaLink?: string;
   featuredNews?: FeaturedNewsItem[];
+  featuredVideo?: FeaturedVideoItem | null;
   seo?: SeoFieldset | null;
 }
 
@@ -69,6 +76,11 @@ export default async function Home() {
       Boolean(item?.title) && Boolean(item?.slug) && Boolean(item?.publishedAt)
   );
 
+  const featuredVideo =
+    data.featuredVideo?.title && data.featuredVideo.youtubeUrl
+      ? { title: data.featuredVideo.title, youtubeUrl: data.featuredVideo.youtubeUrl }
+      : null;
+
   return (
     <div className="flex flex-col">
       <Hero
@@ -109,6 +121,10 @@ export default async function Home() {
           )}
         </div>
       </section>
+
+      {featuredVideo ? (
+        <FeaturedVideo title={featuredVideo.title} youtubeUrl={featuredVideo.youtubeUrl} />
+      ) : null}
       <JsonLd data={organizationJsonLd()} />
     </div>
   );
